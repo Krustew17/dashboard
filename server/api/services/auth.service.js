@@ -13,12 +13,10 @@ const registerUser = async (req, res) => {
         const { username, password, confirmPassword } = req.body;
 
         if (!username || !password || !confirmPassword) {
-            return res
-                .status(400)
-                .json({
-                    message:
-                        "Username and password and confirm password are required",
-                });
+            return res.status(400).json({
+                message:
+                    "Username and password and confirm password are required",
+            });
         }
         const lowerUsername = username.toLowerCase();
         const checkUser = await User.findOne({
@@ -82,10 +80,14 @@ const loginUser = async (req, res) => {
         if (!correctPassword) {
             return res.status(400).json({ message: "Incorrect credentials." });
         }
-
-        const token = jwt.sign({ user }, config.jwtSecret, {
-            expiresIn: "1d",
-        });
+        const { password: _, ...userWithoutPassword } = user.toJSON();
+        const token = jwt.sign(
+            { user: userWithoutPassword },
+            config.jwtSecret,
+            {
+                expiresIn: "1d",
+            },
+        );
 
         updateLogin(user);
 
