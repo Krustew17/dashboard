@@ -1,7 +1,6 @@
 import { Sequelize } from "sequelize";
-import { serialize } from "typeorm";
 
-import { dbConfig } from "../config/dbConfig.js";
+import dbConfig from "../config/dbConfig.js";
 import User from "./userModel.js";
 
 const sequelize = new Sequelize(
@@ -20,6 +19,15 @@ const sequelize = new Sequelize(
     },
   },
 );
+
+sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Connected to the database");
+  })
+  .catch((err) => {
+    console.log("Error connecting to the database" + err);
+  });
 
 const db = {};
 

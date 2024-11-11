@@ -1,6 +1,8 @@
 import * as dotenv from "dotenv";
 import express from "express";
 
+import registerRoutes from "./api/routes/index.js";
+import appConfig from "./config/appConfig.js";
 import config from "./config/index.js";
 import db from "./models/index.js";
 
@@ -9,6 +11,7 @@ dotenv.config();
 async function startServer() {
   const app = express();
 
+  appConfig(app);
   db.sequelize
     .sync()
     .then(() => {
@@ -17,6 +20,7 @@ async function startServer() {
     .catch((err) => {
       console.log("Something went wrong synchronizing tables.");
     });
+  registerRoutes(app);
 
   app
     .listen(config.port, () => {
