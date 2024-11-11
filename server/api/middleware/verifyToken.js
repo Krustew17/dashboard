@@ -7,9 +7,9 @@ const verifyToken = (req, res, next) => {
     try {
         const token = getTokenFromHeader(req, res, next);
         if (!token) {
-            return res.status(401).json({ message: "unauthenticated" });
+            return res.status(401).json({ message: "unathorized" });
         }
-        jwt.verify(token, config.jwtSecret, (err, user) => {
+        jwt.verify(token, config.jwtSecret, (err, _) => {
             if (err) {
                 return res.status(403).json({ message: "unauthorized" });
             }
