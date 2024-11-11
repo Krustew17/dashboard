@@ -25,7 +25,7 @@ export default (sequelize, Sequelize) => {
     },
     lastLogin: {
       type: Sequelize.DATE,
-      allowNull: false,
+      allowNull: true,
       defaultValue: Sequelize.NOW,
     },
     createdAt: {
@@ -34,4 +34,5 @@ export default (sequelize, Sequelize) => {
       defaultValue: Sequelize.NOW,
     },
   });
+  return User;
 };

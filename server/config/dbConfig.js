@@ -1,4 +1,8 @@
-export const dbConfig = {
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const dbConfig = {
   host: process.env.MYSQL_HOST,
   user: process.env.MYSQL_USER,
   password: process.env.MYSQL_PASSWORD,
@@ -11,3 +15,5 @@ export const dbConfig = {
     idle: 10000,
   },
 };
+
+export default dbConfig;
