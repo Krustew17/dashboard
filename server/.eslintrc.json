@@ -17,6 +17,7 @@
           "caseInsensitive": true
         }
       }
-    ]
+    ],
+    "indent": ["error", 4]
   }
 }
