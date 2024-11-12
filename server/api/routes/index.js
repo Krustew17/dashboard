@@ -4,6 +4,7 @@ import authRoutes from "./auth.js";
 import documentRoutes from "./documents.js";
 import metricsRoutes from "./metrics.js";
 import userRoutes from "./user.js";
+import userDeviceRoutes from "./userDevices.js";
 
 const prefix = config.api.prefix;
 
@@ -21,6 +22,12 @@ const registerRoutes = (app) => {
         middlewares.verifyToken,
         middlewares.attachUser,
         documentRoutes,
+    );
+    app.use(
+        `${prefix}/devices`,
+        middlewares.verifyToken,
+        middlewares.attachUser,
+        userDeviceRoutes,
     );
 };
 

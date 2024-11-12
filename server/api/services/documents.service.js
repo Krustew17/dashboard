@@ -37,6 +37,7 @@ const getDocuments = async (req, res) => {
 const createDocument = async (req, res) => {
     try {
         const { title, status } = req.body;
+        const performedByUser = req.user;
 
         if (!title) {
             return res.status(400).json({ message: "Title is required" });
@@ -48,6 +49,8 @@ const createDocument = async (req, res) => {
         };
 
         const document = await Document.create({ title, status, updatedBy });
+
+        await logActivity(logActions.uploadDoc, null, performedByUser);
 
         return res.status(200).json({ document });
     } catch (err) {
