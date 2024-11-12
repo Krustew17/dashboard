@@ -1,5 +1,7 @@
 import { DEFAULT_PAGE_LIMIT } from "../../config/constants.js";
+import logActions from "../../config/logActions.js";
 import db from "../../models/index.js";
+import logActivity from "./helpers/logActivity.js";
 import updateUser from "./helpers/updateUser.js";
 
 const User = db.user;
@@ -27,17 +29,6 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-const getActiveUserCount = async (req, res) => {
-    try {
-        const count = await User.count({
-            where: { status: "active" },
-        });
-        return res.status(200).json({ activeUsersCount: count });
-    } catch (err) {
-        console.log(err);
-    }
-};
-
 const editUser = async (req, res) => {
     try {
         const { id } = req.params;
@@ -48,7 +39,16 @@ const editUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        updateUser(user, { status, role });
+        await updateUser(user, { status, role });
+
+        const targetUserData = {
+            id: user.id,
+            username: user.username,
+            role: user.role,
+            status: user.status,
+        };
+
+        await logActivity(req.user, targetUserData, logActions.update);
 
         await user.save();
         return res.status(200).json({ message: "User updated successfully" });
@@ -66,6 +66,15 @@ const deleteUser = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
+        const targetUserData = {
+            id: user.id,
+            username: user.username,
+            role: user.role,
+            status: user.status,
+        };
+
+        await logActivity(targetUserData, logActions.delete, req.user); // could be done as middleware
+
         await user.destroy();
 
         return res.status(200).json({ message: "User deleted successfully" });
@@ -74,4 +83,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-export default { getAllUsers, editUser, deleteUser, getActiveUserCount };
+export default { getAllUsers, editUser, deleteUser };
