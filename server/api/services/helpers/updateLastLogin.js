@@ -1,3 +1,3 @@
-export default function updateLogin(user) {
-    return user.update({ lastLogin: new Date() });
+export default async function updateLastLoginDate(user) {
+    return await user.update({ lastLogin: new Date() });
 }

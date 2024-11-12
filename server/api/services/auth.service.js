@@ -2,8 +2,10 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import config from "../../config/index.js";
+import logActions from "../../config/logActions.js";
 import db from "../../models/index.js";
-import updateLogin from "./helpers/updateLastLogin.js";
+import logActivity from "./helpers/logActivity.js";
+import updateLastLoginDate from "./helpers/updateLastLogin.js";
 import validations from "./validations/authValidations.js";
 
 const User = db.user;
@@ -33,6 +35,7 @@ const registerUser = async (req, res) => {
         validations.validateUsername(username);
 
         validations.validatePassword(password);
+
         const salt = await bcrypt.genSalt();
         const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -89,7 +92,16 @@ const loginUser = async (req, res) => {
             },
         );
 
-        updateLogin(user);
+        const targetUserData = {
+            id: userWithoutPassword.id,
+            username: userWithoutPassword.username,
+            role: userWithoutPassword.role,
+            status: userWithoutPassword.status,
+        };
+
+        await logActivity(targetUserData, logActions.login);
+
+        await updateLastLoginDate(user);
 
         res.status(200).json({ message: "Login successful.", token });
     } catch (error) {
