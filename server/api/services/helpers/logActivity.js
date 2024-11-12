@@ -11,21 +11,14 @@ export default async function logActivity(
         return;
     }
 
-    if (!performedByUser) {
-        await AuditLog.create({
-            performedByUserData: null,
-            targetUserData: targetUserData,
-            action,
-        });
-        return;
-    }
-
-    const performedByUserData = {
-        id: performedByUser.id,
-        username: performedByUser.username,
-        role: performedByUser.role,
-        status: performedByUser.status,
-    };
+    const performedByUserData = performedByUser
+        ? {
+              id: performedByUser.id,
+              username: performedByUser.username,
+              role: performedByUser.role,
+              status: performedByUser.status,
+          }
+        : null;
 
     await AuditLog.create({
         performedByUserData,
