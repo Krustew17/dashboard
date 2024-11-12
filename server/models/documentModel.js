@@ -1,6 +1,6 @@
 export default (sequelize, Sequelize) => {
-    const AuditLog = sequelize.define(
-        "auditLog",
+    const Document = sequelize.define(
+        "document",
         {
             id: {
                 type: Sequelize.INTEGER,
@@ -8,24 +8,24 @@ export default (sequelize, Sequelize) => {
                 autoIncrement: true,
                 allowNull: false,
             },
-            targetUserData: {
-                type: Sequelize.JSON,
-                allowNull: true,
-            },
-            performedByUserData: {
-                type: Sequelize.JSON,
-                allowNull: true,
-            },
-            action: {
+            title: {
                 type: Sequelize.STRING,
                 allowNull: false,
+            },
+            updatedBy: {
+                type: Sequelize.JSON,
+                allowNull: false,
+            },
+            status: {
+                type: Sequelize.STRING,
+                allowNull: true,
             },
         },
         {
             timestamps: true,
-            tableName: "audit_logs",
+            tableName: "document",
         },
     );
 
-    return AuditLog;
+    return Document;
 };

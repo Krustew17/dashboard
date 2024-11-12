@@ -1,5 +1,7 @@
 export default {
-    delete: "has deleted user",
-    update: "has updated user",
+    deleteUser: "has deleted user",
+    updateUser: "has updated user",
+    updateDoc: "has updated document",
+    deleteDoc: "has deleted document",
     login: "has logged in",
 };

@@ -23,13 +23,13 @@ const getLoginsCount = async (req, res) => {
         const { timeframe } = req.query;
         const validTimeframe = validations.validateTimeframe(timeframe);
 
-        const logs = await AuditLog.findAll({
+        const logs = await AuditLog.findAndCountAll({
             where: {
                 action: logActions.login,
                 createdAt: { [Op.gte]: validTimeframe },
             },
         });
-        return res.status(200).json({ loginsCount: logs.length });
+        return res.status(200).json({ loginsCount: logs.count });
     } catch (err) {
         return res.status(400).json({ message: err.message });
     }

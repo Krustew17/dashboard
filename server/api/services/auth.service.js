@@ -99,7 +99,7 @@ const loginUser = async (req, res) => {
             status: userWithoutPassword.status,
         };
 
-        await logActivity(targetUserData, logActions.login);
+        await logActivity(logActions.login, targetUserData);
 
         await updateLastLoginDate(user);
 
