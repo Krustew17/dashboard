@@ -3,18 +3,17 @@ import db from "../../../models/index.js";
 const AuditLog = db.auditLog;
 
 export default async function logActivity(
-    targetUserData,
     action,
+    targetUserData = null,
     performedByUser = null,
 ) {
-    if (!targetUserData || !action) {
+    if (!action) {
         return;
     }
 
     if (!performedByUser) {
-        console.log("hee");
         await AuditLog.create({
-            performedByUserId: null,
+            performedByUserData: null,
             targetUserData: targetUserData,
             action,
         });
@@ -22,10 +21,10 @@ export default async function logActivity(
     }
 
     const performedByUserData = {
-        id: performedByUser.user.id,
-        username: performedByUser.user.username,
-        role: performedByUser.user.role,
-        status: performedByUser.user.status,
+        id: performedByUser.id,
+        username: performedByUser.username,
+        role: performedByUser.role,
+        status: performedByUser.status,
     };
 
     await AuditLog.create({

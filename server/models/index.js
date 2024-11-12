@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 
 import dbConfig from "../config/dbConfig.js";
+import Document from "./documentModel.js";
 import logs from "./logsModel.js";
 import User from "./userModel.js";
 
@@ -36,4 +37,7 @@ db.Sequelize = Sequelize;
 
 db.user = User(sequelize, Sequelize);
 db.auditLog = logs(sequelize, Sequelize);
+
+db.document = Document(sequelize, Sequelize);
+
 export default db;

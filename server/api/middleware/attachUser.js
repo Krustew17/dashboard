@@ -11,7 +11,7 @@ const attachUser = async (req, res, next) => {
     if (user && user.password) {
         delete user.password;
     }
-    req.user = user;
+    req.user = user.user;
     next();
 };
 

@@ -6,7 +6,7 @@ import updateUser from "./helpers/updateUser.js";
 
 const User = db.user;
 
-const getAllUsers = async (req, res) => {
+const getUsers = async (req, res) => {
     try {
         const { page } = req.query;
         const limit = req.query.limit || DEFAULT_PAGE_LIMIT;
@@ -33,25 +33,26 @@ const editUser = async (req, res) => {
     try {
         const { id } = req.params;
         const { status, role } = req.body;
-        const user = await User.findByPk(id);
+        const performedByUser = req.user;
 
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-
-        await updateUser(user, { status, role });
+        const user = await updateUser(id, { status, role });
 
         const targetUserData = {
-            id: user.id,
-            username: user.username,
-            role: user.role,
-            status: user.status,
+            id: user?.id,
+            username: user?.username,
+            role: user?.role,
+            status: user?.status,
         };
 
-        await logActivity(req.user, targetUserData, logActions.update);
+        await logActivity(
+            logActions.updateUser,
+            targetUserData,
+            performedByUser,
+        );
 
-        await user.save();
-        return res.status(200).json({ message: "User updated successfully" });
+        return res
+            .status(200)
+            .json({ message: "User updated successfully.", updatedUser: user });
     } catch (err) {
         console.log(err);
     }
@@ -61,6 +62,7 @@ const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
         const user = await User.findByPk(id);
+        const performedByUser = req.user;
 
         if (!user) {
             return res.status(404).json({ message: "User not found" });
@@ -73,14 +75,18 @@ const deleteUser = async (req, res) => {
             status: user.status,
         };
 
-        await logActivity(targetUserData, logActions.delete, req.user); // could be done as middleware
+        await logActivity(
+            logActions.deleteUser,
+            targetUserData,
+            performedByUser,
+        ); // could be done as middleware
 
         await user.destroy();
 
-        return res.status(200).json({ message: "User deleted successfully" });
+        return res.status(200).json({ message: "User deleted successfully." });
     } catch (err) {
         console.log(err);
     }
 };
 
-export default { getAllUsers, editUser, deleteUser };
+export default { getUsers, editUser, deleteUser };
