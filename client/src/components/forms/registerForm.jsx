@@ -1,3 +1,4 @@
+import React from "react";
 import AuthForm from "./authForm";
 import authFields from "../../config/authFields";
 import authFormText from "../../constants/authFormText";
