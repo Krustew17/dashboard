@@ -11,22 +11,22 @@ const prefix = config.api.prefix;
 const registerRoutes = (app) => {
     app.use(
         `${prefix}/users`,
-        middlewares.verifyToken,
-        middlewares.attachUser,
+        // middlewares.verifyToken,
+        // middlewares.attachUser,
         userRoutes,
     );
     app.use(`${prefix}/auth`, authRoutes);
     app.use(`${prefix}/metrics`, metricsRoutes);
     app.use(
         `${prefix}/documents`,
-        middlewares.verifyToken,
-        middlewares.attachUser,
+        // middlewares.verifyToken,
+        // middlewares.attachUser,
         documentRoutes,
     );
     app.use(
         `${prefix}/devices`,
-        middlewares.verifyToken,
-        middlewares.attachUser,
+        // middlewares.verifyToken,
+        // middlewares.attachUser,
         userDeviceRoutes,
     );
 };

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import InputField from "./inputField";
 import requester from "../../common/requester";
 import { login } from "../../redux/slices/authSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const AuthForm = ({ fields, text, type }) => {
     const [data, setData] = useState({});
