@@ -2,9 +2,11 @@ import { UAParser } from "ua-parser-js";
 
 import { MAX_USER_DEVICES } from "../../config/constants.js";
 import db from "../../models/index.js";
+import updateDeviceLastLogin from "./updateDeviceLastLogin.js";
 
 const UserDevice = db.userDevice;
 const User = db.user;
+
 export default async function checkUserDevice(req, res, next) {
     try {
         let deviceExists = false;
@@ -29,21 +31,30 @@ export default async function checkUserDevice(req, res, next) {
         parser.setUA(userAgent);
         const device = parser.getResult();
 
-        const deviceJSON = JSON.stringify(device.ua);
+        const deviceInfo = {
+            userAgent: device.ua,
+            os: device.os,
+            browser: device.browser,
+        };
+
         if (devices) {
             deviceExists = devices.rows.some((element) => {
                 return (
-                    JSON.stringify(element.dataValues.deviceInfo.ua) ==
-                    deviceJSON
+                    element.dataValues.deviceInfo == JSON.stringify(deviceInfo)
                 );
             });
         }
+
         if (!deviceExists) {
             await UserDevice.create({
                 userId: user.id,
-                deviceInfo: device,
+                deviceInfo: JSON.stringify(deviceInfo),
+                lastLogin: new Date(),
             });
         }
+        console.log("updating last login...");
+
+        await updateDeviceLastLogin(user, deviceInfo);
 
         next();
     } catch (err) {
