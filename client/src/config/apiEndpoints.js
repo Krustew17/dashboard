@@ -1,26 +1,30 @@
+const usersPrefix = "users";
+
+const metricsPrefix = "metrics";
+
 const apiEndPoints = {
-    auth: {
-        login: {
-            url: "/auth/login",
-            method: "POST",
-        },
-        register: {
-            url: "/auth/register",
-            method: "POST",
-        },
-    },
     users: {
         all: {
-            url: "users",
+            url: usersPrefix,
             method: "GET",
         },
         editUser: {
-            url: "users/edit",
+            url: `${usersPrefix}/edit`,
             method: "PUT",
         },
         deleteUser: {
-            url: "users/delete",
+            url: `${usersPrefix}/delete`,
             method: "DELETE",
+        },
+    },
+    metrics: {
+        activeUsers: {
+            url: `${metricsPrefix}/users/active`,
+            method: "GET",
+        },
+        loginsCount: {
+            url: `${metricsPrefix}/logins`,
+            method: "GET",
         },
     },
 };
