@@ -9,26 +9,23 @@ import db from "./models/index.js";
 dotenv.config();
 
 async function startServer() {
-  const app = express();
+    const app = express();
+    appConfig(app);
+    db.sequelize
+        .sync()
+        .then(() => {
+            console.log("Tables have been synchronized successfully.");
+        })
+        .catch((err) => {
+            console.log("Something went wrong synchronizing tables.");
+        });
+    registerRoutes(app);
 
-  appConfig(app);
-  db.sequelize
-    .sync()
-    .then(() => {
-      console.log("Tables have been synchronized successfully.");
-    })
-    .catch((err) => {
-      console.log("Something went wrong synchronizing tables.");
-    });
-  registerRoutes(app);
-
-  app
-    .listen(config.port, () => {
-      console.log(`Server running on port ${config.port}`);
-    })
-    .on("error", (err) => {
-      console.error(err);
-      process.exit(1);
+    app.listen(config.port, () => {
+        console.log(`Server running on port ${config.port}`);
+    }).on("error", (err) => {
+        console.error(err);
+        process.exit(1);
     });
 }
 

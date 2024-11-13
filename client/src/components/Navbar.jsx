@@ -11,12 +11,34 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import paths from "../config/paths.js";
 import { logout } from "../redux/slices/authSlice";
 import { useDispatch } from "react-redux";
+import { current } from "@reduxjs/toolkit";
 
 const navigation = [
-    { name: "Dashboard", href: paths.dashboard, current: true },
-    { name: "Users", href: paths.users, current: false },
-    { name: "Analytics", href: paths.analytics, current: false },
-    { name: "Logs", href: paths.logs, current: false },
+    {
+        name: "Home",
+        href: paths.home,
+        current: window.location.pathname === paths.home,
+    },
+    {
+        name: "Dashboard",
+        href: paths.dashboard,
+        current: window.location.pathname === paths.dashboard,
+    },
+    {
+        name: "Users",
+        href: paths.users,
+        current: window.location.pathname === paths.users,
+    },
+    {
+        name: "Analytics",
+        href: paths.analytics,
+        current: window.location.pathname === paths.analytics,
+    },
+    {
+        name: "Logs",
+        href: paths.logs,
+        current: window.location.pathname === paths.logs,
+    },
 ];
 
 function classNames(...classes) {
@@ -83,7 +105,7 @@ export default function Nav() {
                         {/* Profile dropdown */}
                         <Menu as="div" className="relative ml-3">
                             <div>
-                                <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <MenuButton className="relative flex rounded-full bg-stone-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                                     <span className="absolute -inset-1.5" />
                                     <span className="sr-only">
                                         Open user menu
@@ -131,8 +153,8 @@ export default function Nav() {
                             aria-current={item.current ? "page" : undefined}
                             className={classNames(
                                 item.current
-                                    ? "bg-gray-900 text-white"
-                                    : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                                    ? "bg-stone-900 text-white"
+                                    : "text-gray-300 hover:bg-stone-700 hover:text-white",
                                 "block rounded-md px-3 py-2 text-base font-medium"
                             )}
                         >

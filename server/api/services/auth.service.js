@@ -108,7 +108,11 @@ const loginUser = async (req, res) => {
 
         await updateLastLoginDate(user);
 
-        res.status(200).json({ message: "Login successful.", token });
+        res.status(200).json({
+            message: "Login successful.",
+            token,
+            user: userWithoutPassword,
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

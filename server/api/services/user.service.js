@@ -8,8 +8,12 @@ const User = db.user;
 
 const getUsers = async (req, res) => {
     try {
-        const { page } = req.query;
+        let { page } = req.query;
         const limit = req.query.limit || DEFAULT_PAGE_LIMIT;
+
+        if (!page) {
+            page = 1;
+        }
 
         const offset = (page - 1) * limit;
 
