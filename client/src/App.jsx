@@ -1,12 +1,19 @@
-import { useState } from "react";
-import "./App.css";
+import { Routes, Route } from "react-router-dom";
+import paths from "./config/paths.js";
 
-function App() {
+import LoginPage from "./pages/loginPage.jsx";
+import RegisterPage from "./pages/registerPage.jsx";
+
+const App = () => {
+    console.log(paths.home);
     return (
-        <>
-            <div>test</div>
-        </>
+        <Routes>
+            <Route path={paths.home} element={<h1>Home</h1>} />
+            <Route path={paths.dashboard} element={<h1>dashboard</h1>} />
+            <Route path={paths.login} element={<LoginPage />} />
+            <Route path={paths.register} element={<RegisterPage />} />
+        </Routes>
     );
-}
+};
 
 export default App;
