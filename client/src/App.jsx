@@ -3,15 +3,26 @@ import paths from "./config/paths.js";
 
 import LoginPage from "./pages/loginPage.jsx";
 import RegisterPage from "./pages/registerPage.jsx";
+// import ProtectedRoute from "./components/protectedRoutes.jsx";
+import Home from "./pages/home.jsx";
 
 const App = () => {
-    console.log(paths.home);
     return (
         <Routes>
-            <Route path={paths.home} element={<h1>Home</h1>} />
+            <Route path={paths.home} element={<Home />} />
             <Route path={paths.dashboard} element={<h1>dashboard</h1>} />
             <Route path={paths.login} element={<LoginPage />} />
             <Route path={paths.register} element={<RegisterPage />} />
+            {/* <Route
+                path="/"
+                element={
+                    <ProtectedRoute
+                        allowedRoles={["admin"]}
+                        children={<Home />}
+                        to="/allowed"
+                    />
+                }
+            /> */}
         </Routes>
     );
 };

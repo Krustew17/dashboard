@@ -3,5 +3,8 @@ const paths = {
     login: "/login",
     dashboard: "/dashboard",
     register: "/register",
+    users: "/users",
+    analytics: "/analytics",
+    logs: "/logs",
 };
 export default paths;

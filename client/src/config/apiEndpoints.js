@@ -1,12 +1,12 @@
 const apiEndspoints = {
-    login: "/auth/login",
-    register: "/auth/register",
-    user: "auth/user",
-    me: "auth/me",
-    users: "auth/users",
-    documents: "documents",
-    devices: "devices",
-    metrics: "metrics",
-    document: "/ocuments",
-    device: "devices",
+    auth: {
+        login: {
+            url: "/auth/login",
+            method: "POST",
+        },
+        register: {
+            url: "/auth/register",
+            method: "POST",
+        },
+    },
 };

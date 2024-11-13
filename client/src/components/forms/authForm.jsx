@@ -1,12 +1,16 @@
 import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import InputField from "./inputField";
 import requester from "../../common/requester";
-import { Link } from "react-router-dom";
+import { login } from "../../redux/slices/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const AuthForm = ({ fields, text, type }) => {
     const [data, setData] = useState({});
     const [errors, setErrors] = useState();
     const [success, setSuccess] = useState();
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
@@ -19,11 +23,21 @@ const AuthForm = ({ fields, text, type }) => {
             if (response.ok) {
                 setSuccess(responseJson.message);
                 setErrors();
-            } else {
-                setErrors(responseJson);
-                setSuccess();
             }
+            if (responseJson.token && responseJson.user) {
+                localStorage.setItem("token", responseJson.token);
+                dispatch(
+                    login({
+                        user: JSON.stringify(responseJson.user),
+                        token: responseJson.token,
+                    })
+                );
+                navigate("/");
+            }
+            setErrors(responseJson);
+            setSuccess();
         } catch (error) {
+            console.log(error);
             setErrors(error);
         }
     };
