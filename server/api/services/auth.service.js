@@ -26,10 +26,12 @@ const registerUser = async (req, res) => {
         });
 
         if (checkUser) {
-            return res.status(400).json({ message: "Username already exists" });
+            return res
+                .status(400)
+                .json({ message: "Username already exists." });
         }
         if (password !== confirmPassword) {
-            return res.status(400).json({ message: "Passwords do not match" });
+            return res.status(400).json({ message: "Passwords do not match." });
         }
 
         validations.validateUsername(username);
@@ -49,7 +51,10 @@ const registerUser = async (req, res) => {
             },
         );
 
-        res.status(200).json({ message: "User Created Successfully", newUser });
+        res.status(200).json({
+            message: "User Created Successfully.",
+            newUser,
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -75,7 +80,7 @@ const loginUser = async (req, res) => {
         }
 
         if (user.status === "pending" || user.status === "inactive") {
-            return res.status(400).json({ message: "User is not active" });
+            return res.status(400).json({ message: "User is not active." });
         }
 
         const correctPassword = await bcrypt.compare(password, user.password);

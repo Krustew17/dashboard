@@ -20,6 +20,9 @@ const validatePassword = (password) => {
     if (!password.match(/\d/)) {
         throw new Error("Password must contain at least one number.");
     }
+    if (!password.match(/[a-z]/)) {
+        throw new Error("Password must contain at least one lowercase letter.");
+    }
 };
 
 const validateUsername = (username) => {
