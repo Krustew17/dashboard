@@ -6,18 +6,16 @@ const getUserRole = () => {
     return user ? user.role : null;
 };
 
-const ProtectedRoute = ({ element: Component, allowedRoles, ...rest }) => {
+const AuthenticatedRoute = ({ element: Component, ...rest }) => {
     const userRole = getUserRole();
 
-    if (!userRole) {
-        return <Navigate to="/login" />;
-    }
-
-    if (allowedRoles && !allowedRoles.includes(userRole)) {
+    // If the user is logged in, redirect to the dashboard or home
+    if (userRole) {
         return <Navigate to="/" />;
     }
 
+    // Otherwise, allow access to the route (login/register)
     return <Component {...rest} />;
 };
 
-export default ProtectedRoute;
+export default AuthenticatedRoute;

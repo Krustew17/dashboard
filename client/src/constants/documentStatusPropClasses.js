@@ -7,7 +7,7 @@ export default function documentStatusPropClasses(status) {
             : status === "pending"
             ? "text-yellow-500"
             : status === "draft"
-            ? "text-blue-500"
+            ? "text-purple-300"
             : status === "archived"
             ? "text-gray-400"
             : ""
