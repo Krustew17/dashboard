@@ -1,12 +1,13 @@
-"use client";
-
-import { useState } from "react";
-import { Dialog, DialogPanel } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Nav from "../components/Navbar";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
+    const navigate = useNavigate();
+    const handleRegisterClick = () => {
+        navigate("/register");
+    };
+
     return (
         <div>
             <Nav />
@@ -28,7 +29,7 @@ export default function HomePage() {
                         <div className="hidden sm:mb-8 sm:flex sm:justify-center">
                             <div className="relative rounded-full px-3 py-1 text-sm/6 text-white ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                                 Announcing our next round of funding.{" "}
-                                <a
+                                <Link
                                     href="#"
                                     className="font-semibold text-indigo-600"
                                 >
@@ -38,7 +39,7 @@ export default function HomePage() {
                                     />
                                     Read more{" "}
                                     <span aria-hidden="true">&rarr;</span>
-                                </a>
+                                </Link>
                             </div>
                         </div>
                         <div className="text-center">
@@ -51,14 +52,14 @@ export default function HomePage() {
                                 Elit sunt amet fugiat veniam occaecat.
                             </p>
                             <div className="mt-10 flex items-center justify-center gap-x-6">
-                                <Link
-                                    to="/register"
+                                <button
+                                    onClick={handleRegisterClick}
                                     className="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                                 >
                                     Get started
-                                </Link>
+                                </button>
                                 <Link
-                                    href="#"
+                                    to="#"
                                     className="text-sm/6 font-semibold text-gray-400"
                                 >
                                     Learn more <span aria-hidden="true">→</span>

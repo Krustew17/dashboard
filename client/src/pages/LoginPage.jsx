@@ -7,7 +7,6 @@ const LoginPage = () => {
     const [username, setUsername] = useState("");
 
     const handleDeviceLimitError = () => {
-        console.log("reee");
         setShowModal(!showModal);
     };
 
