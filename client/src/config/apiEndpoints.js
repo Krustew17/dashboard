@@ -1,5 +1,5 @@
 const usersPrefix = "users";
-
+const logsPrefix = "logs";
 const metricsPrefix = "metrics";
 
 const apiEndPoints = {
@@ -8,11 +8,11 @@ const apiEndPoints = {
             url: usersPrefix,
             method: "GET",
         },
-        editUser: {
+        update: {
             url: `${usersPrefix}/edit`,
             method: "PUT",
         },
-        deleteUser: {
+        delete: {
             url: `${usersPrefix}/delete`,
             method: "DELETE",
         },
@@ -25,6 +25,44 @@ const apiEndPoints = {
         loginsCount: {
             url: `${metricsPrefix}/logins`,
             method: "GET",
+        },
+        registerCount: {
+            url: `${metricsPrefix}/registers?timeframe=1w`,
+            method: "GET",
+        },
+    },
+    logs: {
+        all: {
+            url: `${logsPrefix}/all`,
+            method: "GET",
+        },
+    },
+    devices: {
+        list: {
+            url: "devices",
+            method: "GET",
+        },
+        delete: {
+            url: "devices/delete",
+            method: "DELETE",
+        },
+    },
+    documents: {
+        all: {
+            url: "documents",
+            method: "GET",
+        },
+        create: {
+            url: "documents/create",
+            method: "POST",
+        },
+        update: {
+            url: "documents/update",
+            method: "PUT",
+        },
+        delete: {
+            url: "documents/delete",
+            method: "DELETE",
         },
     },
 };

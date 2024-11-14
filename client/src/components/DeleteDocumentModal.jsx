@@ -2,21 +2,26 @@ import React, { useState } from "react";
 import requester from "../common/requester";
 import apiEndpoints from "../config/apiEndpoints";
 
-const DeleteUserModal = ({ isOpen, user, toggleDeleteModal, onDelete }) => {
-    if (!isOpen || !user) return null;
+const DeleteDocumentModal = ({
+    isOpen,
+    document,
+    toggleDeleteModal,
+    onDelete,
+}) => {
+    if (!isOpen || !document) return null;
     const [errors, setErrors] = useState();
 
     const handleDelete = async () => {
         try {
             const { responseJson, response } = await requester(
-                `${apiEndpoints.users.delete.url}/${user.id}`,
+                `${apiEndpoints.documents.delete.url}/${document.id}`,
                 {
-                    method: apiEndpoints.users.delete.method,
+                    method: apiEndpoints.documents.delete.method,
                 },
                 true
             );
             if (response.ok) {
-                onDelete(user.id);
+                onDelete(document.id);
                 toggleDeleteModal();
             }
         } catch (error) {
@@ -40,9 +45,9 @@ const DeleteUserModal = ({ isOpen, user, toggleDeleteModal, onDelete }) => {
                 </div>
                 <div className="mt-2">
                     <p className="text-white text-center">
-                        Are you sure you want to delete the user <br />
+                        Are you sure you want to delete the document <br />
                         <strong className="text-red-500 hover:text-red-600 cursor-default">
-                            {user.username}
+                            {document.title}
                         </strong>
                         ?
                     </p>
@@ -69,4 +74,4 @@ const DeleteUserModal = ({ isOpen, user, toggleDeleteModal, onDelete }) => {
     );
 };
 
-export default DeleteUserModal;
+export default DeleteDocumentModal;

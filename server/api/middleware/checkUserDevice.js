@@ -1,5 +1,3 @@
-import { UAParser } from "ua-parser-js";
-
 import { MAX_USER_DEVICES } from "../../config/constants.js";
 import db from "../../models/index.js";
 import updateDeviceLastLogin from "./updateDeviceLastLogin.js";
@@ -10,7 +8,15 @@ const User = db.user;
 export default async function checkUserDevice(req, res, next) {
     try {
         let deviceExists = false;
-        const username = req.body.username;
+        const {
+            username,
+            deviceType,
+            deviceModel,
+            os,
+            browser,
+            browserVersion,
+        } = req.body;
+
         const user = await User.findOne({
             where: {
                 username: username,
@@ -26,15 +32,12 @@ export default async function checkUserDevice(req, res, next) {
             });
         }
 
-        const userAgent = req.headers["user-agent"];
-        const parser = new UAParser();
-        parser.setUA(userAgent);
-        const device = parser.getResult();
-
         const deviceInfo = {
-            userAgent: device.ua,
-            os: device.os,
-            browser: device.browser,
+            deviceType,
+            deviceModel,
+            os,
+            browser,
+            browserVersion,
         };
 
         if (devices) {

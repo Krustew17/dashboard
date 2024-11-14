@@ -1,4 +1,4 @@
-import { DEFAULT_PAGE_LIMIT } from "../../config/constants.js";
+import { USERS_PAGE_LIMIT } from "../../config/constants.js";
 import logActions from "../../config/logActions.js";
 import db from "../../models/index.js";
 import logActivity from "./helpers/logActivity.js";
@@ -9,7 +9,7 @@ const User = db.user;
 const getUsers = async (req, res) => {
     try {
         let { page } = req.query;
-        const limit = req.query.limit || DEFAULT_PAGE_LIMIT;
+        const limit = req.query.limit || USERS_PAGE_LIMIT;
 
         if (!page) {
             page = 1;

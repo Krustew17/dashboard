@@ -25,5 +25,4 @@ export default async function logActivity(
         targetUserData,
         action,
     });
-    console.log("log created");
 }

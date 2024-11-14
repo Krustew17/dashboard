@@ -15,7 +15,6 @@ export default {
 
     // JWT secret key
     jwtSecret: process.env.JWT_SECRET,
-    jwtAlgorithm: process.env.JWT_ALGORITHM,
 
     // API
     api: {
