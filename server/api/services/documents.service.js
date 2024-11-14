@@ -1,4 +1,4 @@
-import { DEFAULT_PAGE_LIMIT } from "../../config/constants.js";
+import { USERS_PAGE_LIMIT } from "../../config/constants.js";
 import logActions from "../../config/logActions.js";
 import db from "../../models/index.js";
 import logActivity from "./helpers/logActivity.js";
@@ -14,7 +14,7 @@ const getDocuments = async (req, res) => {
             page = 1;
         }
 
-        const limit = req.query.limit || DEFAULT_PAGE_LIMIT;
+        const limit = req.query.limit || USERS_PAGE_LIMIT;
 
         const offset = (page - 1) * limit;
 
@@ -50,7 +50,7 @@ const createDocument = async (req, res) => {
 
         const document = await Document.create({ title, status, updatedBy });
 
-        await logActivity(logActions.uploadDoc, null, performedByUser);
+        await logActivity(logActions.uploadDoc, document, performedByUser);
 
         return res.status(200).json({ document });
     } catch (err) {
@@ -72,7 +72,7 @@ const editDocument = async (req, res) => {
 
         const document = await updateDocument(id, { title, status, updatedBy });
 
-        await logActivity(logActions.updateDoc, null, performedByUser);
+        await logActivity(logActions.updateDoc, document, performedByUser);
 
         return res.status(200).json({
             message: "Document updated successfully.",
@@ -95,7 +95,7 @@ const deleteDocument = async (req, res) => {
 
         await document.destroy();
 
-        await logActivity(logActions.deleteDoc, null, performedByUser);
+        await logActivity(logActions.deleteDoc, document, performedByUser);
 
         return res
             .status(200)

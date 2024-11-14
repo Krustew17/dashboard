@@ -1,9 +1,20 @@
 import { useEffect, useState } from "react";
 import requester from "../common/requester";
-import UsersTableHead from "./UsersTableHead";
-import UsersTableRow from "./UsersTableRow";
+import TableHead from "./TableHead";
+import TableRow from "./TableRow.jsx";
 import EditUserModal from "./EditUserModal";
 import DeleteUserModal from "./DeleteUserModal";
+import apiEndPoints from "../config/apiEndpoints";
+import { usersTableValues } from "../constants/usersTableValues.js";
+import userStatusPropClasses from "../constants/userStatusPropClasses.js";
+
+const USERS_TABLE_HEAD = usersTableValues.map(
+    (item) => Object.values(item)[0].title
+);
+
+const USRERS_TABLE_ROW_PROPS = usersTableValues.map(
+    (item) => Object.values(item)[0].prop
+);
 
 export default function UsersTable() {
     const [users, setUsers] = useState([]);
@@ -12,6 +23,7 @@ export default function UsersTable() {
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
+    console.log(USERS_TABLE_HEAD);
 
     const toggleEditModal = () => {
         setEditModalOpen(!editModalOpen);
@@ -40,20 +52,25 @@ export default function UsersTable() {
         setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
     };
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                const { responseJson } = await requester("users", {
-                    method: "GET",
-                });
-                setUsers(responseJson.users || []);
-                setLoading(false);
-            } catch (err) {
-                setError("Failed to fetch users");
-                setLoading(false);
-            }
-        };
+    const fetchUsers = async () => {
+        try {
+            const { responseJson, response } = await requester(
+                apiEndPoints.users.all.url,
+                {
+                    method: apiEndPoints.users.all.method,
+                },
+                true
+            );
 
+            setUsers(responseJson.users || []);
+            setLoading(false);
+        } catch (err) {
+            setError("Failed to fetch users");
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
         fetchUsers();
     }, []);
 
@@ -63,13 +80,15 @@ export default function UsersTable() {
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <UsersTableHead />
+                <TableHead tableHead={USERS_TABLE_HEAD} />
                 <tbody>
                     {users.map((user) => {
                         return (
-                            <UsersTableRow
+                            <TableRow
                                 key={user.id}
-                                user={user}
+                                entity={user}
+                                entityProps={USRERS_TABLE_ROW_PROPS}
+                                entityStatusClasses={userStatusPropClasses}
                                 onEditClick={() => handleEditClick(user)}
                                 onDeleteClick={() => toggleDeleteModal(user)}
                             />

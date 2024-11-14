@@ -5,4 +5,5 @@ export default {
     updateDoc: "has updated document",
     deleteDoc: "has deleted document",
     login: "has logged in",
+    register: "has registered",
 };

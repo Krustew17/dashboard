@@ -1,4 +1,4 @@
-import { Op } from "sequelize";
+import { Op, col, fn, literal } from "sequelize";
 
 import logActions from "../../config/logActions.js";
 import db from "../../models/index.js";
@@ -35,4 +35,39 @@ const getLoginsCount = async (req, res) => {
     }
 };
 
-export default { getActiveUserCount, getLoginsCount };
+const getUserRegisterCount = async (req, res) => {
+    try {
+        const { timeframe } = req.query;
+        const validTimeframe = validations.validateTimeframe(timeframe);
+
+        // Fetch data grouped by day
+        const logs = await AuditLog.findAll({
+            attributes: [
+                [fn("DATE", col("createdAt")), "registerDate"],
+                [fn("COUNT", col("id")), "dailyCount"],
+            ],
+            where: {
+                action: logActions.register,
+                createdAt: { [Op.gte]: validTimeframe },
+            },
+            group: [literal("DATE(createdAt)")],
+            order: [[literal("DATE(createdAt)"), "ASC"]],
+        });
+
+        // Format the result for response
+        const result = logs.map((log) => ({
+            date: log.dataValues.registerDate,
+            count: log.dataValues.dailyCount,
+        }));
+
+        return res.status(200).json({ registerCounts: result });
+    } catch (err) {
+        return res.status(400).json({ message: err.message });
+    }
+};
+
+export default {
+    getActiveUserCount,
+    getLoginsCount,
+    getUserRegisterCount,
+};

@@ -7,7 +7,7 @@ import {
 
 const router = Router();
 
-router.get("/", getUserDevices);
+router.post("/", getUserDevices);
 router.delete("/delete/:id", deleteUserDevice);
 
 export default router;

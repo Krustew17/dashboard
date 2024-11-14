@@ -11,7 +11,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import paths from "../config/paths.js";
 import { logout } from "../redux/slices/authSlice";
 import { useDispatch } from "react-redux";
-import { current } from "@reduxjs/toolkit";
+import { Link, useNavigate } from "react-router-dom";
 
 const navigation = [
     {
@@ -35,6 +35,11 @@ const navigation = [
         current: window.location.pathname === paths.analytics,
     },
     {
+        name: "Documents",
+        href: paths.documents,
+        current: window.location.pathname === paths.documents,
+    },
+    {
         name: "Logs",
         href: paths.logs,
         current: window.location.pathname === paths.logs,
@@ -47,9 +52,11 @@ function classNames(...classes) {
 
 export default function Nav() {
     const dispatch = useDispatch();
+    const Navigate = useNavigate();
 
     const handleLogout = () => {
         dispatch(logout());
+        Navigate("/login");
     };
 
     return (
@@ -105,16 +112,25 @@ export default function Nav() {
                         {/* Profile dropdown */}
                         <Menu as="div" className="relative ml-3">
                             <div>
-                                <MenuButton className="relative flex rounded-full bg-stone-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                                <MenuButton className="relative flex rounded-full bg-stone-800 text-md focus:outline-none">
                                     <span className="absolute -inset-1.5" />
                                     <span className="sr-only">
                                         Open user menu
                                     </span>
-                                    <img
-                                        alt=""
-                                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                        className="size-8 rounded-full"
-                                    />
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        fill="none"
+                                        viewBox="0 0 24 24"
+                                        strokeWidth={1.5}
+                                        stroke="currentColor"
+                                        className="size-8"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                                        />
+                                    </svg>
                                 </MenuButton>
                             </div>
                             <MenuItems
@@ -122,20 +138,20 @@ export default function Nav() {
                                 className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black/5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                             >
                                 <MenuItem>
-                                    <a
+                                    <button
                                         href="#"
                                         className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
                                     >
-                                        Your Profile
-                                    </a>
+                                        Devices
+                                    </button>
                                 </MenuItem>
                                 <MenuItem>
-                                    <a
-                                        href="#"
+                                    <Link
+                                        to={paths.changePassword}
                                         className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
                                     >
-                                        Settings
-                                    </a>
+                                        Change Password
+                                    </Link>
                                 </MenuItem>
                             </MenuItems>
                         </Menu>

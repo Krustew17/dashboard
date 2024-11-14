@@ -5,7 +5,13 @@ import requester from "../../common/requester";
 import { login } from "../../redux/slices/authSlice";
 import { useDispatch } from "react-redux";
 
-const AuthForm = ({ fields, text, type }) => {
+const AuthForm = ({
+    fields,
+    text,
+    type,
+    onUsernameChange,
+    onDeviceLimitError,
+}) => {
     const [data, setData] = useState({});
     const [errors, setErrors] = useState();
     const [success, setSuccess] = useState();
@@ -14,18 +20,25 @@ const AuthForm = ({ fields, text, type }) => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-
         try {
             const { response, responseJson } = await requester(`auth/${type}`, {
                 method: "POST",
                 body: data,
             });
-            if (response.ok) {
+
+            if (responseJson.message === "User cannot exceed 3 devices.") {
+                onDeviceLimitError();
+                return;
+            }
+
+            if (response.ok && !responseJson.message) {
                 setSuccess(responseJson.message);
                 setErrors();
+                return;
             }
             if (responseJson.token && responseJson.user) {
                 localStorage.setItem("token", responseJson.token);
+                localStorage.setItem("user", JSON.stringify(responseJson.user));
                 dispatch(
                     login({
                         user: JSON.stringify(responseJson.user),
@@ -34,7 +47,7 @@ const AuthForm = ({ fields, text, type }) => {
                 );
                 navigate("/");
             }
-            setErrors(responseJson);
+            setErrors(responseJson.message);
             setSuccess();
         } catch (error) {
             console.log(error);
@@ -45,6 +58,9 @@ const AuthForm = ({ fields, text, type }) => {
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setData({ ...data, [name]: value });
+        if (name === "username") {
+            onUsernameChange(value);
+        }
     };
 
     return (
@@ -52,6 +68,7 @@ const AuthForm = ({ fields, text, type }) => {
             {fields.map((field) => {
                 return (
                     <InputField
+                        key={field.name}
                         name={field.name}
                         type={field.type}
                         placeholder={field.placeholder}
@@ -60,7 +77,7 @@ const AuthForm = ({ fields, text, type }) => {
                 );
             })}
 
-            {errors && <div className="text-red-500">{errors.message}</div>}
+            {errors && <div className="text-red-500">{errors}</div>}
             {success && <div className="text-green-500">{success}</div>}
 
             <div>

@@ -1,23 +1,15 @@
 import React from "react";
 
-const TABLE_HEAD = [
-    "ID",
-    "Username",
-    "Role",
-    "Status",
-    "Last Login",
-    "Created At",
-];
-
-const UsersTableHead = () => {
+const TableHead = ({ tableHead }) => {
     return (
         <thead className="text-xs uppercase  bg-stone-700 text-stone-400">
             <tr>
-                {TABLE_HEAD.map((head) => (
-                    <th scope="col" className="px-6 py-3" key={head}>
-                        {head}
-                    </th>
-                ))}
+                {tableHead &&
+                    tableHead.map((head) => (
+                        <th scope="col" className="px-6 py-3" key={head}>
+                            {head}
+                        </th>
+                    ))}
                 <th scope="col" className="px-6 py-3">
                     <span className="sr-only">Edit</span>
                 </th>
@@ -28,4 +20,4 @@ const UsersTableHead = () => {
         </thead>
     );
 };
-export default UsersTableHead;
+export default TableHead;

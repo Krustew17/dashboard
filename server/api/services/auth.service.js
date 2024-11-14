@@ -50,6 +50,7 @@ const registerUser = async (req, res) => {
                 fields: ["username", "password"],
             },
         );
+        await logActivity(logActions.register, newUser, null);
 
         res.status(200).json({
             message: "User Created Successfully.",

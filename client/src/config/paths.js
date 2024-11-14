@@ -6,5 +6,7 @@ const paths = {
     users: "/users",
     analytics: "/analytics",
     logs: "/logs",
+    changePassword: "/change-password",
+    documents: "/documents",
 };
 export default paths;

@@ -1,10 +1,14 @@
 import db from "../../models/index.js";
 
 const UserDevice = db.userDevice;
+const User = db.user;
 
 const getUserDevices = async (req, res) => {
     try {
-        const userId = req.user.id;
+        const userName = req.body.username;
+        const userId = await User.findOne({
+            where: { username: userName },
+        }).then((user) => user.id);
 
         const devices = await UserDevice.findAndCountAll({
             where: { userId },
@@ -30,9 +34,6 @@ const removeUserDevice = async (req, res) => {
 
         if (!device) {
             return res.status(404).json({ message: "Device not found." });
-        }
-        if (device.userId !== req.user.id) {
-            return res.status(401).json({ message: "Unauthorized." });
         }
 
         await device.destroy();
