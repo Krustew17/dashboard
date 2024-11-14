@@ -1,24 +1,31 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ children, allowedRoles }) => {
-    const navigate = useNavigate();
-    const user = useSelector((state) => state.auth.userInfo);
-    console.log(user);
+const user = JSON.parse(localStorage.getItem("user"));
+const getUserRole = () => {
+    return user ? user.role : null;
+};
 
-    if (!user) {
-        navigate("/login");
-        // return null;
+const ProtectedRoute = ({
+    element: Component,
+    allowedRoles,
+    allowLoggedUser = true,
+    ...rest
+}) => {
+    const userRole = getUserRole();
+
+    if (!userRole) {
+        return <Navigate to="/login" />;
+    }
+    if (!allowLoggedUser && user) {
+        return <Navigate to="/" />;
     }
 
-    const hasAccess = user?.role && allowedRoles.includes(user?.role);
-
-    if (!hasAccess) {
-        navigate("/not-authorized", { replace: true });
+    if (allowedRoles && !allowedRoles.includes(userRole)) {
+        return <Navigate to="/" />;
     }
 
-    return children;
+    return <Component {...rest} />;
 };
 
 export default ProtectedRoute;

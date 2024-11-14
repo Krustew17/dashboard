@@ -4,6 +4,7 @@ import TableHead from "./TableHead";
 import TableRow from "./TableRow.jsx";
 import EditDocumentModal from "./EditDocumentModal.jsx";
 import DeleteDocumentModal from "./DeleteDocumentModal.jsx";
+import CreateDocumentModal from "./CreateDocumentModal.jsx";
 import apiEndPoints from "../config/apiEndpoints";
 import { documentsTableValues } from "../constants/documentsTableValues.js";
 import documentStatusPropClasses from "../constants/documentStatusPropClasses.js";
@@ -16,11 +17,13 @@ const DOCUMENTS_TABLE_ROWS_PROPS = documentsTableValues.map(
     (item) => Object.values(item)[0].prop
 );
 
-export default function documentsTable() {
-    const [documents, setdocuments] = useState([]);
+const documentsTable = () => {
+    const [documents, setDocuments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [editModalOpen, setEditModalOpen] = useState(false);
+    const [showCreateDocumentModal, setShowCreateDocumentModal] =
+        useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedDocument, setselectedDocument] = useState(null);
 
@@ -39,21 +42,23 @@ export default function documentsTable() {
         setDeleteModalOpen(!deleteModalOpen);
     };
 
-    const handleSave = (updateddocument) => {
-        setdocuments((prevdocuments) =>
-            prevdocuments.map((document) =>
-                document.id === updateddocument.id ? updateddocument : document
+    const handleSave = (updatedDocument) => {
+        setDocuments((prevDocuments) =>
+            prevDocuments.map((document) =>
+                document.id === updatedDocument.id ? updatedDocument : document
             )
         );
     };
 
-    const handleDelete = (documentId) => {
-        setdocuments((prevdocuments) =>
-            prevdocuments.filter((document) => document.id !== documentId)
-        );
+    const handleDelete = () => {
+        fetchDocuments();
+    };
+    const handleCreate = (document) => {
+        console.log(documents, document);
+        setDocuments((prevdocuments) => [...prevdocuments, document]);
     };
 
-    const fetchdocuments = async () => {
+    const fetchDocuments = async () => {
         try {
             const { responseJson, response } = await requester(
                 apiEndPoints.documents.all.url,
@@ -63,7 +68,7 @@ export default function documentsTable() {
                 true
             );
 
-            setdocuments(responseJson.documents || []);
+            setDocuments(responseJson.documents || []);
             setLoading(false);
         } catch (err) {
             setError("Failed to fetch documents");
@@ -72,8 +77,11 @@ export default function documentsTable() {
     };
 
     useEffect(() => {
-        fetchdocuments();
+        fetchDocuments();
     }, []);
+    const toggleCreateDocumentModal = () => {
+        setShowCreateDocumentModal(!showCreateDocumentModal);
+    };
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div className="text-red-500">{error}</div>;
@@ -81,7 +89,10 @@ export default function documentsTable() {
     return (
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <TableHead tableHead={DOCUMENTS_TABLE_HEAD} />
+                <TableHead
+                    tableHead={DOCUMENTS_TABLE_HEAD}
+                    onAddNewClick={toggleCreateDocumentModal}
+                />
                 <tbody>
                     {documents.map((document) => {
                         return (
@@ -99,6 +110,12 @@ export default function documentsTable() {
                     })}
                 </tbody>
             </table>
+            <CreateDocumentModal
+                isOpen={showCreateDocumentModal}
+                toggleModal={toggleCreateDocumentModal}
+                onCreate={handleCreate}
+            />
+
             <DeleteDocumentModal
                 isOpen={deleteModalOpen}
                 document={selectedDocument}
@@ -113,4 +130,5 @@ export default function documentsTable() {
             />
         </div>
     );
-}
+};
+export default documentsTable;

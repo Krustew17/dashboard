@@ -1,6 +1,6 @@
 import React from "react";
 
-const TableHead = ({ tableHead }) => {
+const TableHead = ({ tableHead, onAddNewClick }) => {
     return (
         <thead className="text-xs uppercase  bg-stone-700 text-stone-400">
             <tr>
@@ -13,9 +13,20 @@ const TableHead = ({ tableHead }) => {
                 <th scope="col" className="px-6 py-3">
                     <span className="sr-only">Edit</span>
                 </th>
-                <th scope="col" className="px-6 py-3">
-                    <span className="sr-only">Delete</span>
-                </th>
+                {(onAddNewClick && (
+                    <th scope="col" className="px-6 py-3">
+                        <button
+                            className="bg-green-700 hover:bg-green-800 text-white  px-4 py-2 rounded-md color-white"
+                            onClick={onAddNewClick}
+                        >
+                            Create
+                        </button>
+                    </th>
+                )) || (
+                    <th scope="col" className="px-6 py-3">
+                        <span className="sr-only">Delete</span>
+                    </th>
+                )}
             </tr>
         </thead>
     );
