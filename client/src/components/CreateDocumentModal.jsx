@@ -20,6 +20,7 @@ const CreateDocumentModal = ({ isOpen, toggleModal, onCreate }) => {
                 true
             );
             onCreate(responseJson.document);
+            setTitle("");
             toggleModal();
         } catch (error) {
             console.error("Error creating document:", error);

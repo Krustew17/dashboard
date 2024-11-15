@@ -6,7 +6,7 @@ import { documentStatuses } from "../constants/documentStatuses";
 const DocumentEditModal = ({ isOpen, document, toggleModal, onSave }) => {
     if (!isOpen || !document) return null;
 
-    const [title, setTitle] = useState(document.title);
+    const [title, setTitle] = useState(document.title || "");
     const [status, setStatus] = useState(document.status);
     const [errors, setErrors] = useState();
 
@@ -34,6 +34,8 @@ const DocumentEditModal = ({ isOpen, document, toggleModal, onSave }) => {
             );
 
             if (response.ok) {
+                setTitle("");
+
                 handleSave();
             } else {
                 setErrors(responseJson);
@@ -76,7 +78,6 @@ const DocumentEditModal = ({ isOpen, document, toggleModal, onSave }) => {
                         className="border p-1 w-full bg-stone-700 hover:cursor-pointer cursor-pointer"
                     >
                         {Object.values(documentStatuses).map((status) => {
-                            console.log(status);
                             return (
                                 <option key={status.value} value={status.value}>
                                     {status.label}

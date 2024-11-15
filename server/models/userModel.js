@@ -23,7 +23,7 @@ export default (sequelize, Sequelize) => {
         role: {
             type: Sequelize.STRING,
             allowNull: true,
-            defaultValue: "",
+            defaultValue: "none",
         },
         lastLogin: {
             type: Sequelize.DATE,

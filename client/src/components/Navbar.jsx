@@ -53,11 +53,9 @@ function classNames(...classes) {
 export default function Nav() {
     const user = useSelector((state) => state.auth.userInfo);
     const dispatch = useDispatch();
-    const Navigate = useNavigate();
-
     const handleLogout = () => {
         dispatch(logout());
-        Navigate("/login");
+        window.location.reload();
     };
 
     return (
