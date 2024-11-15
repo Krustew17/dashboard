@@ -1,6 +1,7 @@
 import { Op, col, fn, literal } from "sequelize";
 
 import logActions from "../../config/logActions.js";
+import defaultTimeframes from "../../constants/defaultTimeframes.js";
 import db from "../../models/index.js";
 import validations from "./validations/validTimeframe.js";
 
@@ -23,7 +24,10 @@ const getActiveUserCount = async (req, res) => {
 
 const getLoginsCount = async (req, res) => {
     try {
-        const { timeframe } = req.query;
+        let { timeframe } = req.query;
+        if (!timeframe) {
+            timeframe = defaultTimeframes.loginsCount;
+        }
         const validTimeframe = validations.validateTimeframe(timeframe);
 
         const logs = await AuditLog.findAndCountAll({
@@ -40,7 +44,10 @@ const getLoginsCount = async (req, res) => {
 
 const getUserRegisterCount = async (req, res) => {
     try {
-        const { timeframe } = req.query;
+        let { timeframe } = req.query;
+        if (!timeframe) {
+            timeframe = defaultTimeframes.registersCount;
+        }
         const validTimeframe = validations.validateTimeframe(timeframe);
 
         // Fetch data grouped by day
@@ -71,7 +78,10 @@ const getUserRegisterCount = async (req, res) => {
 
 const getRolesActivity = async (req, res) => {
     try {
-        const { timeframe } = req.query;
+        let { timeframe } = req.query;
+        if (!timeframe) {
+            timeframe = defaultTimeframes.rolesActivity;
+        }
         const validTimeframe = validations.validateTimeframe(timeframe);
 
         const logs = await sequelize.query(
@@ -102,7 +112,7 @@ const mostViewedPage = async (req, res) => {
     try {
         let { timeframe } = req.query;
         if (!timeframe) {
-            timeframe = "1d";
+            timeframe = defaultTimeframes.mostViewedPage;
         }
 
         const validTimeframe = validations.validateTimeframe(timeframe);
@@ -124,7 +134,10 @@ const mostViewedPage = async (req, res) => {
 
 const pageViewsCount = async (req, res) => {
     try {
-        const { timeframe } = req.query;
+        let { timeframe } = req.query;
+        if (!timeframe) {
+            timeframe = defaultTimeframes.pageViewsCount;
+        }
         const validTimeframe = validations.validateTimeframe(timeframe);
 
         const result = await ViewedPagesLog.findAll({

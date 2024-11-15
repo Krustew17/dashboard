@@ -5,7 +5,9 @@ import requester from "../common/requester";
 import apiEndpoints from "../config/apiEndpoints";
 import LineChartComponent from "../components/charts/LineChart";
 import BarChartComponent from "../components/charts/BarChart";
-import useWindowSize from "../components/hooks/getScreenSize";
+import useWindowSize from "../components/hooks/useWindowSize";
+import PieChartComponent from "../components/charts/PieChart";
+import LoginsCard from "../components/LoginsCard";
 
 const AnalyticsPage = () => {
     const [activeUsersCount, setActiveUsersCount] = useState(0);
@@ -13,6 +15,7 @@ const AnalyticsPage = () => {
     const [registersData, setRegistersData] = useState(0);
     const [mostViewedPage, setMostViewedPage] = useState("");
     const [barChartData, setBarChartData] = useState([]);
+    const [pieChartData, setPieChartData] = useState([]);
     const windowSize = useWindowSize();
     const chartHeight = windowSize.width < 1024 ? 200 : 300;
 
@@ -30,10 +33,12 @@ const AnalyticsPage = () => {
         }
     };
 
-    const fetchLoginsCount = async () => {
+    const fetchLoginsCount = async (timeframe) => {
         try {
             const { responseJson } = await requester(
-                `${apiEndpoints.metrics.loginsCount.url}?timeframe=1m`,
+                `${apiEndpoints.metrics.loginsCount.url}${
+                    timeframe ? `?timeframe=${timeframe}` : ""
+                }`,
                 {
                     method: apiEndpoints.metrics.loginsCount.method,
                 }
@@ -44,10 +49,12 @@ const AnalyticsPage = () => {
         }
     };
 
-    const fetchRegistersCount = async () => {
+    const fetchRegistersCount = async (timeframe) => {
         try {
             const { responseJson } = await requester(
-                `${apiEndpoints.metrics.registersCount.url}?timeframe=1m`,
+                `${apiEndpoints.metrics.registersCount.url}${
+                    timeframe ? `?timeframe=${timeframe}` : ""
+                }`,
                 {
                     method: apiEndpoints.metrics.registersCount.method,
                 }
@@ -58,10 +65,12 @@ const AnalyticsPage = () => {
         }
     };
 
-    const fetchBarChartData = async () => {
+    const fetchBarChartData = async (timeframe) => {
         try {
             const { responseJson } = await requester(
-                `${apiEndpoints.metrics.rolesActivity.url}?timeframe=1w`,
+                `${apiEndpoints.metrics.rolesActivity.url}${
+                    timeframe ? `?timeframe=${timeframe}` : ""
+                }`,
                 {
                     method: apiEndpoints.metrics.rolesActivity.method,
                 }
@@ -86,12 +95,50 @@ const AnalyticsPage = () => {
         }
     };
 
+    const fetchPageViews = async (timeframe) => {
+        try {
+            const { responseJson } = await requester(
+                `${apiEndpoints.metrics.pageViewsCount.url}${
+                    timeframe ? `?timeframe=${timeframe}` : ""
+                }`,
+                {
+                    method: apiEndpoints.metrics.pageViewsCount.method,
+                }
+            );
+            console.log(responseJson);
+            setPieChartData(responseJson.pageViewsCount);
+        } catch (error) {
+            console.error("Error fetching page views:", error);
+        }
+    };
+
+    const handleTimeframeChange = (timeframe, type) => {
+        console.log(timeframe, type);
+        switch (type) {
+            case "loginsCount":
+                fetchLoginsCount(timeframe);
+                break;
+            case "registersCount":
+                fetchRegistersCount(timeframe);
+                break;
+            case "barChart":
+                fetchBarChartData(timeframe);
+                break;
+            case "pieChart":
+                fetchPageViews(timeframe);
+                break;
+            default:
+                break;
+        }
+    };
+
     useEffect(() => {
         fetchLoginsCount();
         fetchActiveUsers();
         fetchRegistersCount();
         fetchBarChartData();
         fetchMostViewedPage();
+        fetchPageViews();
     }, []);
 
     return (
@@ -108,13 +155,12 @@ const AnalyticsPage = () => {
                             <p className="text-2xl">{activeUsersCount}</p>
                         </div>
                     </div>
-                    <div className="bg-stone-800 p-6 rounded-lg shadow-lg text-white flex items-center space-x-4">
-                        <FaSignInAlt className="text-indigo-500 text-3xl" />
-                        <div>
-                            <h3 className="text-lg font-semibold">Logins</h3>
-                            <p className="text-2xl">{loginCount}</p>
-                        </div>
-                    </div>
+                    <LoginsCard
+                        loginCount={loginCount}
+                        onTimeFrameChange={(timeframe) =>
+                            handleTimeframeChange(timeframe, "loginsCount")
+                        }
+                    />
                     <div className="bg-stone-800 p-6 rounded-lg shadow-lg text-white flex items-center space-x-4">
                         <FaEye className="text-indigo-500 text-3xl" />
                         <div>
@@ -145,14 +191,11 @@ const AnalyticsPage = () => {
                         title={"Daily Role Actions (Last 7 days)"}
                     />
                 </div>
-
-                <div className="bg-stone-800 p-6 rounded-lg shadow-lg">
-                    <h3 className="text-xl font-semibold text-white">
-                        Other Stats
-                    </h3>
-                    <p className="text-white">
-                        Additional analytics data can go here!
-                    </p>
+                <div className="flex w-full flex-wrap justify-center gap-4 px-8">
+                    <PieChartComponent
+                        data={pieChartData}
+                        title={"Page Views Count (Last 7 days)"}
+                    />
                 </div>
             </div>
         </div>
