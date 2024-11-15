@@ -16,6 +16,7 @@ const RegisterForm = () => {
                     fields={authFields.register}
                     type="register"
                     text={authFormText.register}
+                    onUsernameChange={() => {}}
                 />
             </div>
         </div>

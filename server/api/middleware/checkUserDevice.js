@@ -22,6 +22,9 @@ export default async function checkUserDevice(req, res, next) {
                 username: username,
             },
         });
+        if (!user) {
+            return res.status(404).json({ message: "User not found." });
+        }
         const devices = await UserDevice.findAndCountAll({
             where: { userId: user.id },
         });

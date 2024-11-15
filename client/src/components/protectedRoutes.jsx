@@ -9,10 +9,10 @@ const getUserRole = () => {
 const ProtectedRoute = ({ element: Component, allowedRoles, ...rest }) => {
     const userRole = getUserRole();
 
-    if (!userRole) {
-        return <Navigate to="/login" />;
+    if (!userRole && user) {
+        return <Navigate to="/" />;
     }
-
+    console.log(allowedRoles, userRole, allowedRoles.includes(userRole));
     if (allowedRoles && !allowedRoles.includes(userRole)) {
         return <Navigate to="/" />;
     }

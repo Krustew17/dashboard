@@ -15,4 +15,8 @@ export const userRoles = {
         value: "sed1",
         label: "SED 1",
     },
+    none: {
+        value: "none",
+        label: "None",
+    },
 };

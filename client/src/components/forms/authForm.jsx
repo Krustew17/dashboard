@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import InputField from "./inputField";
 import requester from "../../common/requester";
 import { login } from "../../redux/slices/authSlice";
@@ -15,7 +15,6 @@ const AuthForm = ({
     const [data, setData] = useState({});
     const [errors, setErrors] = useState();
     const [success, setSuccess] = useState();
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const handleFormSubmit = async (e) => {
@@ -31,7 +30,10 @@ const AuthForm = ({
                 return;
             }
 
-            if (response.ok && !responseJson.message) {
+            if (
+                response.ok &&
+                responseJson.message === "User Created Successfully."
+            ) {
                 setSuccess(responseJson.message);
                 setErrors();
                 return;
@@ -45,7 +47,7 @@ const AuthForm = ({
                         token: responseJson.token,
                     })
                 );
-                navigate("/");
+                return (window.location.href = "/");
             }
             setErrors(responseJson.message);
             setSuccess();
