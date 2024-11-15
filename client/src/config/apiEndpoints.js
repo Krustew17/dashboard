@@ -34,6 +34,14 @@ const apiEndPoints = {
             url: `${metricsPrefix}/roles/activity`,
             method: "GET",
         },
+        mostViewedPage: {
+            url: `${metricsPrefix}/page/most-viewed`,
+            method: "GET",
+        },
+        pageViewsCount: {
+            url: `${metricsPrefix}/page/views`,
+            method: "GET",
+        },
     },
     logs: {
         all: {
