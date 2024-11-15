@@ -9,9 +9,9 @@ export default function HomePage() {
     };
 
     return (
-        <div>
+        <div className="h-screen overflow-hidden">
             <Nav />
-            <div className="bg-stone-900 color-white h-full overflow-hidden">
+            <div className="bg-stone-900 color-white h-screen overflow-y-hidden">
                 <div className="relative isolate px-6 pt-14 lg:px-8">
                     <div
                         aria-hidden="true"

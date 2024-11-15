@@ -3,7 +3,6 @@ import Nav from "../components/Navbar";
 import apiEndpoints from "../config/apiEndpoints";
 import requester from "../common/requester";
 import Logs from "../components/Logs";
-import CombinedChartComponent from "../components/charts/CombinedChart";
 
 const DashboardPage = () => {
     const [activeUsersCount, setActiveUsersCount] = useState(0);

@@ -23,7 +23,6 @@ export default async function updateDeviceLastLogin(user, deviceInfo) {
             userId: user.id,
         },
     });
-    console.log(device);
 
     if (device) {
         return await device.update({ lastLogin: new Date() });

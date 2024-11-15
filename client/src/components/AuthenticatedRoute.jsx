@@ -9,12 +9,10 @@ const getUserRole = () => {
 const AuthenticatedRoute = ({ element: Component, ...rest }) => {
     const userRole = getUserRole();
 
-    // If the user is logged in, redirect to the dashboard or home
     if (userRole) {
         return <Navigate to="/" />;
     }
 
-    // Otherwise, allow access to the route (login/register)
     return <Component {...rest} />;
 };
 

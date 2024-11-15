@@ -76,6 +76,7 @@ const DocumentEditModal = ({ isOpen, document, toggleModal, onSave }) => {
                         className="border p-1 w-full bg-stone-700 hover:cursor-pointer cursor-pointer"
                     >
                         {Object.values(documentStatuses).map((status) => {
+                            console.log(status);
                             return (
                                 <option key={status.value} value={status.value}>
                                     {status.label}

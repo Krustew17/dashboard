@@ -23,14 +23,12 @@ export default function UsersTable() {
     const [editModalOpen, setEditModalOpen] = useState(false);
     const [deleteModalOpen, setDeleteModalOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
-    console.log(USERS_TABLE_HEAD);
 
     const toggleEditModal = () => {
         setEditModalOpen(!editModalOpen);
     };
 
     const handleEditClick = (user) => {
-        console.log(user);
         setSelectedUser(user);
         toggleEditModal();
     };

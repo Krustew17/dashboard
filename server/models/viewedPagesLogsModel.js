@@ -1,6 +1,6 @@
 export default (sequelize, Sequelize) => {
-    const Document = sequelize.define(
-        "document",
+    const viewedPagesLogs = sequelize.define(
+        "viewedPagesLogs",
         {
             id: {
                 type: Sequelize.INTEGER,
@@ -8,25 +8,20 @@ export default (sequelize, Sequelize) => {
                 autoIncrement: true,
                 allowNull: false,
             },
-            title: {
+            page: {
                 type: Sequelize.STRING,
                 allowNull: false,
             },
-            updatedBy: {
+            viewedBy: {
                 type: Sequelize.JSON,
-                allowNull: false,
-            },
-            status: {
-                type: Sequelize.STRING,
                 allowNull: true,
-                defaultValue: "pending",
             },
         },
         {
             timestamps: true,
-            tableName: "document",
+            tableName: "viewed_pages_logs",
         },
     );
 
-    return Document;
+    return viewedPagesLogs;
 };

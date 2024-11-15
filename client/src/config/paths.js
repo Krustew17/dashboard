@@ -1,7 +1,7 @@
 const paths = {
     home: "/",
     login: "/login",
-    dashboard: "/dashboard",
+    // dashboard: "/dashboard",
     register: "/register",
     users: "/users",
     analytics: "/analytics",

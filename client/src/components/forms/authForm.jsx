@@ -50,7 +50,6 @@ const AuthForm = ({
             setErrors(responseJson.message);
             setSuccess();
         } catch (error) {
-            console.log(error);
             setErrors(error);
         }
     };

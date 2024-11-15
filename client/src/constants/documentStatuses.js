@@ -1,19 +1,19 @@
 export const documentStatuses = {
-    draft: {
-        value: "draft",
-        label: "Draft",
+    approved: {
+        value: "approved",
+        label: "Approved",
     },
     pending: {
         value: "pending",
         label: "Pending",
     },
-    approved: {
-        value: "approved",
-        label: "Approved",
-    },
     rejected: {
         value: "rejected",
         label: "Rejected",
+    },
+    draft: {
+        value: "draft",
+        label: "Draft",
     },
     archived: {
         value: "archived",

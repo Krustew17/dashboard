@@ -2,25 +2,6 @@ import React, { useState, useEffect } from "react";
 import apiEndpoints from "../config/apiEndpoints";
 import requester from "../common/requester";
 import calculateTimeAgo from "../helpers/calculateTimeAgo";
-
-const LOG_TYPES = {
-    login: {
-        name: "Login",
-        url: apiEndpoints.metrics.loginsCount.url,
-        method: apiEndpoints.metrics.loginsCount.method,
-    },
-    register: {
-        name: "Register",
-        url: apiEndpoints.metrics.registerCount.url,
-        method: apiEndpoints.metrics.registerCount.method,
-    },
-    all: {
-        name: "all",
-        url: apiEndpoints.logs.all.url,
-        method: apiEndpoints.logs.all.method,
-    },
-};
-
 const Logs = ({ type }) => {
     const [logs, setLogs] = useState([]);
 
@@ -28,10 +9,11 @@ const Logs = ({ type }) => {
         const fetchLogs = async () => {
             try {
                 const { response, responseJson } = await requester(
-                    LOG_TYPES[type].url,
+                    apiEndpoints.logs.all.url,
                     {
-                        method: LOG_TYPES[type].method,
-                    }
+                        method: apiEndpoints.logs.all.method,
+                    },
+                    true
                 );
 
                 setLogs(responseJson.logs);

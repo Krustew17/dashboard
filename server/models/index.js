@@ -5,6 +5,7 @@ import Document from "./documentModel.js";
 import Logs from "./logsModel.js";
 import UserDevice from "./userDeviceModel.js";
 import User from "./userModel.js";
+import viewedPagesLogs from "./viewedPagesLogsModel.js";
 
 const sequelize = new Sequelize(
     dbConfig.database,
@@ -42,5 +43,7 @@ db.auditLog = Logs(sequelize, Sequelize);
 db.document = Document(sequelize, Sequelize);
 
 db.userDevice = UserDevice(sequelize, Sequelize);
+
+db.viewedPagesLogs = viewedPagesLogs(sequelize, Sequelize);
 
 export default db;

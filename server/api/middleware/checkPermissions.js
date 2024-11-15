@@ -7,7 +7,6 @@ export default function checkPermissions(requiredPermissions) {
         }
 
         const userPermissions = rolesPermissions[req.user.role] || [];
-        console.log(userPermissions);
 
         const hasPermission = requiredPermissions.every((perm) =>
             userPermissions.includes(perm),

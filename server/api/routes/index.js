@@ -25,7 +25,12 @@ const registerRoutes = (app) => {
         documentRoutes,
     );
     app.use(`${prefix}/devices`, userDeviceRoutes);
-    app.use(`${prefix}/logs`, logsRoutes);
+    app.use(
+        `${prefix}/logs`,
+        middlewares.verifyToken,
+        middlewares.attachUser,
+        logsRoutes,
+    );
 };
 
 export default registerRoutes;

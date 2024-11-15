@@ -32,7 +32,6 @@ const documentsTable = () => {
     };
 
     const handleEditClick = (document) => {
-        console.log(document);
         setselectedDocument(document);
         toggleEditModal();
     };
@@ -54,7 +53,6 @@ const documentsTable = () => {
         fetchDocuments();
     };
     const handleCreate = (document) => {
-        console.log(documents, document);
         setDocuments((prevdocuments) => [...prevdocuments, document]);
     };
 

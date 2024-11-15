@@ -26,8 +26,12 @@ const apiEndPoints = {
             url: `${metricsPrefix}/logins`,
             method: "GET",
         },
-        registerCount: {
-            url: `${metricsPrefix}/registers?timeframe=1w`,
+        registersCount: {
+            url: `${metricsPrefix}/registers`,
+            method: "GET",
+        },
+        rolesActivity: {
+            url: `${metricsPrefix}/roles/activity`,
             method: "GET",
         },
     },
@@ -35,6 +39,10 @@ const apiEndPoints = {
         all: {
             url: `${logsPrefix}/all`,
             method: "GET",
+        },
+        track: {
+            url: `${logsPrefix}/track-route`,
+            method: "POST",
         },
     },
     devices: {
