@@ -8,15 +8,18 @@ import HomePage from "./pages/HomePage.jsx";
 import UsersPage from "./pages/UsersPage.jsx";
 import AnalyticsPage from "./pages/AnalyticsPage.jsx";
 import LogsPage from "./pages/LogsPage.jsx";
-import DashboardPage from "./pages/DashboadPage.jsx";
+import DashboardPage from "./pages/DashboardPage.jsx";
 import DocumentsPage from "./pages/DocumentsPage.jsx";
 import AuthenticatedRoute from "./components/AuthenticatedRoute.jsx";
+import useTrackRouteChange from "./components/hooks/RouteChange.jsx";
 
 const App = () => {
+    useTrackRouteChange();
+
     return (
         <Routes>
             <Route path={paths.home} element={<HomePage />} />
-            <Route
+            {/* <Route
                 path={paths.dashboard}
                 element={
                     <ProtectedRoute
@@ -24,7 +27,7 @@ const App = () => {
                         element={DashboardPage}
                     />
                 }
-            />
+            /> */}
             <Route
                 path={paths.users}
                 element={

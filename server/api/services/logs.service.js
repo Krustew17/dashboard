@@ -1,7 +1,10 @@
 import { LOGS_PAGE_LIMIT } from "../../config/constants.js";
 import db from "../../models/index.js";
+import viewedPagesLogsModel from "../../models/viewedPagesLogsModel.js";
+import validations from "../services/validations/validPage.js";
 
 const AuditLog = db.auditLog;
+const ViewedPagesLog = db.viewedPagesLogs;
 
 const getAllLogs = async (req, res) => {
     try {
@@ -33,4 +36,28 @@ const getAllLogs = async (req, res) => {
     }
 };
 
-export default { getAllLogs };
+const saveViewedRoute = async (req, res) => {
+    try {
+        const { path } = req.body;
+        const user = req.user;
+        console.log(user);
+        const validPage = validations.validPagePath(path);
+
+        if (!validPage) {
+            return res.status(404).json({ message: "Page not found." });
+        }
+        const log = {
+            page: path,
+            viewedBy: user,
+        };
+
+        await ViewedPagesLog.create(log);
+        return res
+            .status(200)
+            .json({ message: "Page view saved successfully." });
+    } catch (err) {
+        console.log(err);
+    }
+};
+
+export default { getAllLogs, saveViewedRoute };

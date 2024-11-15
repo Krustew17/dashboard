@@ -3,7 +3,6 @@ import React from "react";
 const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     const handlePageChange = (page) => {
         if (page > 0 && page <= totalPages) {
-            console.log("e");
             onPageChange(page);
         }
     };

@@ -55,7 +55,6 @@ export default async function checkUserDevice(req, res, next) {
                 lastLogin: new Date(),
             });
         }
-        console.log("updating last login...");
 
         await updateDeviceLastLogin(user, deviceInfo);
 
