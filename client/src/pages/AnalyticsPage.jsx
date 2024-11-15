@@ -72,12 +72,26 @@ const AnalyticsPage = () => {
         }
     };
 
+    const fetchMostViewedPage = async () => {
+        try {
+            const { responseJson } = await requester(
+                apiEndpoints.metrics.mostViewedPage.url,
+                {
+                    method: apiEndpoints.metrics.mostViewedPage.method,
+                }
+            );
+            setMostViewedPage(responseJson.mostViewedPage.page);
+        } catch (error) {
+            console.error("Error fetching most viewed page:", error);
+        }
+    };
+
     useEffect(() => {
         fetchLoginsCount();
         fetchActiveUsers();
         fetchRegistersCount();
         fetchBarChartData();
-        setMostViewedPage("Home Page");
+        fetchMostViewedPage();
     }, []);
 
     return (
@@ -97,9 +111,7 @@ const AnalyticsPage = () => {
                     <div className="bg-stone-800 p-6 rounded-lg shadow-lg text-white flex items-center space-x-4">
                         <FaSignInAlt className="text-indigo-500 text-3xl" />
                         <div>
-                            <h3 className="text-lg font-semibold">
-                                Monthly Logins
-                            </h3>
+                            <h3 className="text-lg font-semibold">Logins</h3>
                             <p className="text-2xl">{loginCount}</p>
                         </div>
                     </div>
@@ -109,7 +121,9 @@ const AnalyticsPage = () => {
                             <h3 className="text-lg font-semibold">
                                 Most Viewed Page
                             </h3>
-                            <p className="text-2xl">{mostViewedPage}</p>
+                            <p className="text-2xl capitalize">
+                                {mostViewedPage}
+                            </p>
                         </div>
                     </div>
                 </div>

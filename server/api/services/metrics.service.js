@@ -6,6 +6,8 @@ import validations from "./validations/validTimeframe.js";
 
 const User = db.user;
 const AuditLog = db.auditLog;
+const ViewedPagesLog = db.viewedPagesLogs;
+
 const sequelize = db.sequelize;
 
 const getActiveUserCount = async (req, res) => {
@@ -96,9 +98,55 @@ const getRolesActivity = async (req, res) => {
     }
 };
 
+const mostViewedPage = async (req, res) => {
+    try {
+        let { timeframe } = req.query;
+        if (!timeframe) {
+            timeframe = "1d";
+        }
+
+        const validTimeframe = validations.validateTimeframe(timeframe);
+
+        const result = await ViewedPagesLog.findAll({
+            attributes: ["page", [fn("COUNT", col("page")), "viewCount"]],
+            group: ["page"],
+            where: {
+                createdAt: { [Op.gte]: validTimeframe },
+            },
+            order: [[fn("COUNT", col("page")), "DESC"]],
+        });
+
+        return res.status(200).json({ mostViewedPage: result[0] });
+    } catch (err) {
+        return res.status(400).json({ message: err.message });
+    }
+};
+
+const pageViewsCount = async (req, res) => {
+    try {
+        const { timeframe } = req.query;
+        const validTimeframe = validations.validateTimeframe(timeframe);
+
+        const result = await ViewedPagesLog.findAll({
+            attributes: ["page", [fn("COUNT", col("page")), "viewCount"]],
+            where: {
+                createdAt: { [Op.gte]: validTimeframe },
+            },
+            group: ["page"],
+            order: [[fn("COUNT", col("page")), "DESC"]],
+        });
+
+        return res.status(200).json({ pageViewsCount: result });
+    } catch (err) {
+        return res.status(400).json({ message: err.message });
+    }
+};
+
 export default {
     getActiveUserCount,
     getLoginsCount,
     getUserRegisterCount,
     getRolesActivity,
+    mostViewedPage,
+    pageViewsCount,
 };

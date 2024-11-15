@@ -1,10 +1,10 @@
 export default {
-    "/": "home",
+    "/": "Home",
     // "/dashboard": "dashboard",
-    "/documents": "documents",
-    "/users": "users",
-    "/analytics": "analytics",
-    "/logs": "logs",
+    "/documents": "Documents",
+    "/users": "Users",
+    "/analytics": "Analytics",
+    "/logs": "Logs",
     "/login": "login",
     "/register": "register",
 };
