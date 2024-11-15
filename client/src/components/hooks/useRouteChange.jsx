@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import requester from "../../common/requester";
 import apiEndPoints from "../../config/apiEndpoints";
 
-const useTrackRouteChange = () => {
+const useRouteChange = () => {
     const hasRequested = useRef(false);
     const location = useLocation();
 
@@ -39,4 +39,4 @@ const useTrackRouteChange = () => {
     }, [location]);
 };
 
-export default useTrackRouteChange;
+export default useRouteChange;

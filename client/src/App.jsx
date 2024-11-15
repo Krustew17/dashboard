@@ -11,10 +11,10 @@ import LogsPage from "./pages/LogsPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import DocumentsPage from "./pages/DocumentsPage.jsx";
 import AuthenticatedRoute from "./components/AuthenticatedRoute.jsx";
-import useTrackRouteChange from "./components/hooks/RouteChange.jsx";
+import useRouteChange from "./components/hooks/useRouteChange.jsx";
 
 const App = () => {
-    useTrackRouteChange();
+    useRouteChange();
 
     return (
         <Routes>
