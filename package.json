@@ -7,11 +7,10 @@
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "npm run build-react && npm run move-build",
         "build-react": "cd client && npm install && npm run build",
-        "move-build": "mkdir -p server/public && cp -r client/build/* server/public/",
+        "move-build": "mkdir -p server/public && cp -r client/dist/* server/public/",
         "start": "cd server && npm install && npm run start:prod",
         "installAll": "cd client && npm install && cd ../server && npm install",
-        "installBE": "cd server && npm install",
-        "power": "npm run buildAndMove && npm run start"
+        "installBE": "cd server && npm install"
     },
     "repository": {
         "type": "git",
