@@ -28,7 +28,7 @@ const appConfig = (app) => {
     });
 
     app.use(
-        express.static(path.join(__dirname, "public"), {
+        express.static(path.join(__dirname, "../public"), {
             setHeaders: (res, path) => {
                 res.set("Cache-Control", "public, max-age=0");
             },
@@ -36,7 +36,7 @@ const appConfig = (app) => {
     );
 
     app.get("*", (req, res) => {
-        res.sendFile(path.join(__dirname, "public", "index.html"));
+        res.sendFile(path.join(__dirname, "../public", "index.html"));
     });
 };
 export default appConfig;
