@@ -40,7 +40,6 @@ const saveViewedRoute = async (req, res) => {
     try {
         const { path } = req.body;
         const user = req.user;
-        console.log(user);
         const validPage = validations.validPagePath(path);
 
         if (!validPage) {

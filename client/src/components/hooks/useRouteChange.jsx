@@ -22,7 +22,6 @@ const useRouteChange = () => {
                     true
                 );
 
-                // Mark that the request has been made
                 hasRequested.current = true;
             } catch (error) {
                 console.error("Error tracking route change:", error);
