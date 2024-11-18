@@ -5,7 +5,9 @@
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "buildAndMove": "cd client && npm install && npm run build && mv dist ../server",
+        "build": "npm run build-react && npm run move-build",
+        "build-react": "cd client && npm install && npm run build",
+        "move-build": "mkdir -p server/public && cp -r client/build/* server/public/",
         "start": "cd server && npm install && npm run start:prod",
         "installAll": "cd client && npm install && cd ../server && npm install",
         "installBE": "cd server && npm install",
