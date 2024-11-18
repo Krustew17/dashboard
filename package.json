@@ -1,0 +1,23 @@
+{
+    "name": "sampleproject",
+    "version": "1.0.0",
+    "description": "Dashboard with React JS and NodeJS ",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "cd client && npm install && npm run build",
+        "start": "cd server && npm install && npm run start:prod",
+        "installBE": "cd server && npm install",
+        "power": "npm run build && npm run start"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Krustew17/sampleProject.git"
+    },
+    "author": "krustew",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Krustew17/sampleProject/issues"
+    },
+    "homepage": "https://github.com/Krustew17/sampleProject#readme"
+}
