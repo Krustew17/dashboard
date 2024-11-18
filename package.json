@@ -5,11 +5,11 @@
     "main": "app.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "cd client && npm install && npm run build",
+        "buildAndMove": "cd client && npm install && npm run build && mv dist ../server",
         "start": "cd server && npm install && npm run start:prod",
         "installAll": "cd client && npm install && cd ../server && npm install",
         "installBE": "cd server && npm install",
-        "power": "npm run build && npm run start"
+        "power": "npm run buildAndMove && npm run start"
     },
     "repository": {
         "type": "git",
