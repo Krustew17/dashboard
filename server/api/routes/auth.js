@@ -11,6 +11,11 @@ const router = Router();
 
 router.post("/register", registerUser);
 router.post("/login", middlewares.checkUserDevice, loginUser);
-router.post("/change-password", changePassword);
+router.post(
+    "/change-password",
+    middlewares.verifyToken,
+    middlewares.attachUser,
+    changePassword,
+);
 
 export default router;

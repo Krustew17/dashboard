@@ -3,6 +3,7 @@ const paths = {
     login: "/login",
     // dashboard: "/dashboard",
     register: "/register",
+    changePassword: "/change-password",
     users: "/users",
     analytics: "/analytics",
     logs: "/logs",

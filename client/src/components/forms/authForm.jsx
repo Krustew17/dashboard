@@ -17,27 +17,27 @@ const AuthForm = ({
     const [success, setSuccess] = useState();
     const dispatch = useDispatch();
 
+    const redirectUrl = type == "change-password" ? "/" : "/login";
+
     const handleFormSubmit = async (e) => {
         e.preventDefault();
+        const useToken = type === "change-password" ? true : false;
+
         try {
-            const { response, responseJson } = await requester(`auth/${type}`, {
-                method: "POST",
-                body: data,
-            });
+            const { response, responseJson } = await requester(
+                `auth/${type}`,
+                {
+                    method: "POST",
+                    body: data,
+                },
+                useToken
+            );
 
             if (responseJson.message === "User cannot exceed 3 devices.") {
                 onDeviceLimitError();
                 return;
             }
 
-            if (
-                response.ok &&
-                responseJson.message === "User Created Successfully."
-            ) {
-                setSuccess(responseJson.message);
-                setErrors();
-                return;
-            }
             if (responseJson.token && responseJson.user) {
                 localStorage.setItem("token", responseJson.token);
                 localStorage.setItem("user", JSON.stringify(responseJson.user));
@@ -51,6 +51,18 @@ const AuthForm = ({
             }
             setErrors(responseJson.message);
             setSuccess();
+
+            if (
+                (response.ok && response.status === 200) ||
+                (response.ok && response.status === 201)
+            ) {
+                setSuccess(responseJson.message + " Redirecting...");
+                setErrors();
+                setTimeout(() => {
+                    window.location.href = redirectUrl;
+                }, 2000);
+                return;
+            }
         } catch (error) {
             setErrors(error);
         }

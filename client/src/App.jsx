@@ -12,6 +12,7 @@ import DashboardPage from "./pages/DashboardPage.jsx";
 import DocumentsPage from "./pages/DocumentsPage.jsx";
 import AuthenticatedRoute from "./components/AuthenticatedRoute.jsx";
 import useRouteChange from "./components/hooks/useRouteChange.jsx";
+import ChangePasswordPage from "./pages/ChangePasswordPage.jsx";
 
 const App = () => {
     useRouteChange();
@@ -62,6 +63,15 @@ const App = () => {
             <Route
                 path={paths.register}
                 element={<AuthenticatedRoute element={RegisterPage} />}
+            />
+            <Route
+                path={paths.changePassword}
+                element={
+                    <ProtectedRoute
+                        allowedRoles={["admin", "updated", "viewer", "sed1"]}
+                        element={ChangePasswordPage}
+                    />
+                }
             />
             <Route
                 path={paths.documents}

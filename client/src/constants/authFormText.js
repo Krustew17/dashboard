@@ -9,5 +9,10 @@ const authFormText = {
         extra: "Already have an account?",
         redirect: "Sign In",
     },
+    changePassword: {
+        buttonText: "Change Password",
+        extra: "",
+        redirect: "",
+    },
 };
 export default authFormText;
