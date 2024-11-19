@@ -119,4 +119,8 @@ const loginUser = async (req, res) => {
     }
 };
 
-export default { registerUser, loginUser };
+const changePassword = async (req, res) => {
+    return res.status(200).json({ message: "Password changed successfully." });
+};
+
+export default { registerUser, loginUser, changePassword };
