@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import LoginForm from "../components/forms/loginForm.jsx";
-import DeviceManageModal from "../components/DeviceManageModal.jsx";
+import DeviceManageModal from "../components/modals/DeviceManageModal.jsx";
 
 const LoginPage = () => {
     const [showModal, setShowModal] = useState(false);

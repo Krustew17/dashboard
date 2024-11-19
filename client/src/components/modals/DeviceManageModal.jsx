@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import requester from "../common/requester";
-import apiEndpoints from "../config/apiEndpoints";
+import requester from "../../common/requester";
+import apiEndpoints from "../../config/apiEndpoints";
 
 const DeviceManageModal = ({ isOpen, onClose, username }) => {
     const [devices, setDevices] = useState([]);

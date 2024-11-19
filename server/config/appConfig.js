@@ -14,10 +14,10 @@ const corsOptions = {
 };
 
 const appConfig = (app) => {
+    app.use(cors(corsOptions));
     app.use(express.json());
     app.use(express.urlencoded({ extended: true }));
     registerRoutes(app);
-    app.use(cors(corsOptions));
     app.use((req, res, next) => {
         res.header("Access-Control-Allow-Origin", "*");
         res.header(

@@ -28,6 +28,23 @@ const authFields = {
             placeholder: "Password",
         },
     ],
+    changePassword: [
+        {
+            name: "currentPassword",
+            type: "password",
+            placeholder: "Current Password",
+        },
+        {
+            name: "newPassword",
+            type: "password",
+            placeholder: "New Password",
+        },
+        {
+            name: "confirmNewPassword",
+            type: "password",
+            placeholder: "Confirm New Password",
+        },
+    ],
 };
 
 export default authFields;

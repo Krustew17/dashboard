@@ -120,7 +120,49 @@ const loginUser = async (req, res) => {
 };
 
 const changePassword = async (req, res) => {
-    return res.status(200).json({ message: "Password changed successfully." });
+    try {
+        const { currentPassword, newPassword, confirmNewPassword } = req.body;
+        const user = req.user;
+
+        const lowerUsername = user.username.toLowerCase();
+        const userCheck = await User.findOne({
+            where: { username: lowerUsername },
+        });
+
+        if (!userCheck) {
+            return res.status(400).json({ message: "User does not exist." });
+        }
+
+        if (!currentPassword || !newPassword || !confirmNewPassword) {
+            return res.status(400).json({
+                message:
+                    "Current password, new password and confirm password are required",
+            });
+        }
+        if (newPassword !== confirmNewPassword) {
+            return res.status(400).json({ message: "Passwords do not match." });
+        }
+
+        const correctPassword = await bcrypt.compare(
+            currentPassword,
+            userCheck.password,
+        );
+
+        if (!correctPassword) {
+            return res.status(400).json({ message: "Incorrect credentials." });
+        }
+
+        validations.validatePassword(newPassword);
+
+        const salt = await bcrypt.genSalt();
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+        await userCheck.update({ password: hashedPassword });
+        await logActivity(logActions.changePassword, userCheck, null);
+
+        res.status(200).json({ message: "Password changed successfully." });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
 
 export default { registerUser, loginUser, changePassword };

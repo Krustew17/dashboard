@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import requester from "../common/requester";
-import apiEndpoints from "../config/apiEndpoints";
+import requester from "../../common/requester";
+import apiEndpoints from "../../config/apiEndpoints";
 
 const CreateDocumentModal = ({ isOpen, toggleModal, onCreate }) => {
     const [title, setTitle] = useState("");
