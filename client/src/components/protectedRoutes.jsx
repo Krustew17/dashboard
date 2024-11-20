@@ -12,7 +12,6 @@ const ProtectedRoute = ({ element: Component, allowedRoles, ...rest }) => {
     if (!userRole && user) {
         return <Navigate to="/" />;
     }
-    console.log(allowedRoles, userRole, allowedRoles.includes(userRole));
     if (allowedRoles && !allowedRoles.includes(userRole)) {
         return <Navigate to="/" />;
     }

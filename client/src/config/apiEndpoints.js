@@ -1,83 +1,87 @@
-const usersPrefix = "users";
-const logsPrefix = "logs";
-const metricsPrefix = "metrics";
+import routePrefixes from "../constants/routePrefixes";
 
 const apiEndPoints = {
+    auth: {
+        refreshToken: {
+            url: `${routePrefixes.auth}/refresh-token`,
+            method: "POST",
+        },
+    },
     users: {
         all: {
-            url: usersPrefix,
+            url: routePrefixes.users,
             method: "GET",
         },
         update: {
-            url: `${usersPrefix}/edit`,
+            url: `${routePrefixes.users}/edit`,
             method: "PUT",
         },
         delete: {
-            url: `${usersPrefix}/delete`,
+            url: `${routePrefixes.users}/delete`,
             method: "DELETE",
         },
     },
     metrics: {
         activeUsers: {
-            url: `${metricsPrefix}/users/active`,
+            url: `${routePrefixes.metrics}/users/active`,
             method: "GET",
         },
         loginsCount: {
-            url: `${metricsPrefix}/logins`,
+            url: `${routePrefixes.metrics}/logins`,
             method: "GET",
         },
         registersCount: {
-            url: `${metricsPrefix}/registers`,
+            url: `${routePrefixes.metrics}/registers`,
             method: "GET",
         },
         rolesActivity: {
-            url: `${metricsPrefix}/roles/activity`,
+            url: `${routePrefixes.metrics}/roles/activity`,
             method: "GET",
         },
         mostViewedPage: {
-            url: `${metricsPrefix}/page/most-viewed`,
+            url: `${routePrefixes.metrics}/page/most-viewed`,
             method: "GET",
         },
         pageViewsCount: {
-            url: `${metricsPrefix}/page/views`,
+            url: `${routePrefixes.metrics}/page/views`,
             method: "GET",
         },
     },
     logs: {
         all: {
-            url: `${logsPrefix}/all`,
+            url: `${routePrefixes.logs}/all`,
             method: "GET",
         },
         track: {
-            url: `${logsPrefix}/track-route`,
+            url: `${routePrefixes.logs}/track-route`,
             method: "POST",
         },
     },
     devices: {
         list: {
-            url: "devices",
+            url: routePrefixes.devices,
             method: "GET",
         },
         delete: {
-            url: "devices/delete",
+            url: `${routePrefixes.devices}/delete`,
             method: "DELETE",
         },
     },
     documents: {
         all: {
-            url: "documents",
+            url: routePrefixes.documents,
             method: "GET",
         },
         create: {
-            url: "documents/create",
+            url: `${routePrefixes.documents}/create`,
             method: "POST",
         },
         update: {
-            url: "documents/update",
+            url: `${routePrefixes.documents}/update`,
             method: "PUT",
         },
         delete: {
-            url: "documents/delete",
+            url: `${routePrefixes.documents}/delete`,
             method: "DELETE",
         },
     },

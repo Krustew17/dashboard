@@ -5,7 +5,7 @@ export default function checkPermissions(requiredPermissions) {
         if (!req.user) {
             return res.status(401).send("Unauthorized");
         }
-
+        console.log(req.user);
         const userPermissions = rolesPermissions[req.user.role] || [];
 
         const hasPermission = requiredPermissions.every((perm) =>
