@@ -94,8 +94,13 @@ const loginUser = async (req, res) => {
             { user: userWithoutPassword },
             config.jwtSecret,
             {
-                expiresIn: "1d",
+                expiresIn: "10m",
             },
+        );
+        const refreshToken = jwt.sign(
+            { user: userWithoutPassword },
+            config.jwtSecret,
+            { expiresIn: "1w" },
         );
 
         const targetUserData = {
@@ -112,7 +117,32 @@ const loginUser = async (req, res) => {
         res.status(200).json({
             message: "Login successful.",
             token,
+            refreshToken,
             user: userWithoutPassword,
+        });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+const refreshToken = async (req, res) => {
+    try {
+        const { refreshToken } = req.body;
+
+        jwt.verify(refreshToken, config.jwtSecret, (err, user) => {
+            if (err) {
+                return res.status(403).json({ message: "unauthorized" });
+            }
+            const newToken = jwt.sign(
+                {
+                    user: user.user,
+                },
+                config.jwtSecret,
+                {
+                    expiresIn: "10m",
+                },
+            );
+            res.status(200).json({ newToken });
         });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -165,4 +195,4 @@ const changePassword = async (req, res) => {
     }
 };
 
-export default { registerUser, loginUser, changePassword };
+export default { registerUser, loginUser, refreshToken, changePassword };

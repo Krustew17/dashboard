@@ -41,6 +41,7 @@ const AuthForm = ({
             if (responseJson.token && responseJson.user) {
                 localStorage.setItem("token", responseJson.token);
                 localStorage.setItem("user", JSON.stringify(responseJson.user));
+                localStorage.setItem("refreshToken", responseJson.refreshToken);
                 dispatch(
                     login({
                         user: JSON.stringify(responseJson.user),

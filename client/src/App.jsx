@@ -13,9 +13,13 @@ import DocumentsPage from "./pages/DocumentsPage.jsx";
 import AuthenticatedRoute from "./components/AuthenticatedRoute.jsx";
 import useRouteChange from "./components/hooks/useRouteChange.jsx";
 import ChangePasswordPage from "./pages/ChangePasswordPage.jsx";
+import { useSelector } from "react-redux";
 
 const App = () => {
-    useRouteChange();
+    const user = useSelector((state) => state.auth.userInfo);
+    if (user) {
+        useRouteChange();
+    }
 
     return (
         <Routes>
