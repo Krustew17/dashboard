@@ -60,7 +60,7 @@ const UserEditModal = ({ isOpen, user, toggleModal, onSave }) => {
                 <div className="mt-2">
                     <label>Role</label>
                     <select
-                        value={user.role}
+                        value={role}
                         onChange={(e) => setRole(e.target.value)}
                         className="border p-1 w-full bg-stone-700"
                     >

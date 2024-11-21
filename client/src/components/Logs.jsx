@@ -2,28 +2,22 @@ import React, { useState, useEffect } from "react";
 import apiEndpoints from "../config/apiEndpoints";
 import requester from "../common/requester";
 import calculateTimeAgo from "../helpers/calculateTimeAgo";
+import useFetchEntity from "../components/hooks/useFetchEntity.jsx";
+import validEntityTypes from "../constants/validEntityTypes.js";
 const Logs = ({ type }) => {
-    const [logs, setLogs] = useState([]);
+    const {
+        entities: logs,
+        loading,
+        error,
+    } = useFetchEntity(
+        validEntityTypes.logs,
+        apiEndpoints.logs.all.url,
+        apiEndpoints.logs.all.method
+    );
 
-    useEffect(() => {
-        const fetchLogs = async () => {
-            try {
-                const { response, responseJson } = await requester(
-                    apiEndpoints.logs.all.url,
-                    {
-                        method: apiEndpoints.logs.all.method,
-                    },
-                    true
-                );
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div className="text-red-500">{error}</div>;
 
-                setLogs(responseJson.logs);
-            } catch (error) {
-                console.error("Error fetching logs:", error);
-            }
-        };
-
-        fetchLogs();
-    }, []);
     return (
         <div>
             {logs &&

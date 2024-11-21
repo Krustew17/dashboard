@@ -12,14 +12,7 @@ import paths from "../config/paths.js";
 import { logout } from "../redux/slices/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-
-const navigation = [
-    { name: "Home", href: paths.home },
-    { name: "Analytics", href: paths.analytics },
-    { name: "Users", href: paths.users },
-    { name: "Documents", href: paths.documents },
-    { name: "Logs", href: paths.logs },
-];
+import { navigation } from "../constants/navigation.js";
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(" ");
@@ -29,7 +22,6 @@ export default function Nav() {
     const user = useSelector((state) => state.auth.userInfo);
     const dispatch = useDispatch();
     const location = useLocation();
-    const navigate = useNavigate();
 
     const handleLogout = () => {
         dispatch(logout());

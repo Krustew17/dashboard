@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
-import requester from "../common/requester";
 import TableHead from "./TableHead";
 import TableRow from "./TableRow.jsx";
 import EditUserModal from "./modals/EditUserModal.jsx";
-import DeleteUserModal from "./modals/DeleteUserModal";
 import apiEndPoints from "../config/apiEndpoints";
 import { usersTableValues } from "../constants/usersTableValues.js";
 import userStatusPropClasses from "../constants/userStatusPropClasses.js";
+import useFetchEntity from "./hooks/useFetchEntity.jsx";
+import useToggleModal from "./hooks/useToggleModal.jsx";
+import validEntityTypes from "../constants/validEntityTypes.js";
+import DeleteEntityModal from "./modals/DeleteEntityModal.jsx";
+import EditEntityModal from "./modals/EditEntityModal.jsx";
+import { editUsersModalConfig } from "../config/editModalConfigs.js";
 
 const USERS_TABLE_HEAD = usersTableValues.map(
     (item) => Object.values(item)[0].title
@@ -17,60 +20,29 @@ const USRERS_TABLE_ROW_PROPS = usersTableValues.map(
 );
 
 export default function UsersTable() {
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [editModalOpen, setEditModalOpen] = useState(false);
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(null);
+    const {
+        entities: users,
+        loading,
+        error,
+        refetch,
+    } = useFetchEntity(
+        validEntityTypes.users,
+        apiEndPoints.users.all.url,
+        apiEndPoints.users.all.method
+    );
 
-    const toggleEditModal = () => {
-        setEditModalOpen(!editModalOpen);
+    const {
+        selectedEntity,
+        toggleDeleteModal,
+        handleEditClick,
+        toggleEditModal,
+        editModalOpen,
+        deleteModalOpen,
+    } = useToggleModal();
+
+    const handleAction = () => {
+        refetch();
     };
-
-    const handleEditClick = (user) => {
-        setSelectedUser(user);
-        toggleEditModal();
-    };
-
-    const toggleDeleteModal = (user) => {
-        setSelectedUser(user);
-        setDeleteModalOpen(!deleteModalOpen);
-    };
-
-    const handleSave = (updatedUser) => {
-        setUsers((prevUsers) =>
-            prevUsers.map((user) =>
-                user.id === updatedUser.id ? updatedUser : user
-            )
-        );
-    };
-
-    const handleDelete = (userId) => {
-        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== userId));
-    };
-
-    const fetchUsers = async () => {
-        try {
-            const { responseJson, response } = await requester(
-                apiEndPoints.users.all.url,
-                {
-                    method: apiEndPoints.users.all.method,
-                },
-                true
-            );
-
-            setUsers(responseJson.users || []);
-            setLoading(false);
-        } catch (err) {
-            setError("Failed to fetch users");
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchUsers();
-    }, []);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div className="text-red-500">{error}</div>;
@@ -94,17 +66,21 @@ export default function UsersTable() {
                     })}
                 </tbody>
             </table>
-            <DeleteUserModal
+            <DeleteEntityModal
                 isOpen={deleteModalOpen}
-                user={selectedUser}
-                toggleDeleteModal={toggleDeleteModal}
-                onDelete={handleDelete}
+                entity={selectedEntity}
+                toggleModal={toggleDeleteModal}
+                onDelete={handleAction}
+                type={validEntityTypes.users}
             />
-            <EditUserModal
+            <EditEntityModal
                 isOpen={editModalOpen}
-                user={selectedUser}
+                entity={selectedEntity}
                 toggleModal={toggleEditModal}
-                onSave={handleSave}
+                onSave={handleAction}
+                fieldsConfig={editUsersModalConfig}
+                url={apiEndPoints.users.update.url}
+                method={apiEndPoints.users.update.method}
             />
         </div>
     );
