@@ -1,33 +1,22 @@
-import React, { useState } from "react";
-import requester from "../../common/requester";
+import React from "react";
 import apiEndpoints from "../../config/apiEndpoints";
+import useDeleteEntity from "../hooks/useDeleteEntity";
 
-const DeleteUserModal = ({ isOpen, user, toggleDeleteModal, onDelete }) => {
-    if (!isOpen || !user) return null;
-    const [errors, setErrors] = useState();
+const DeleteEntityModal = ({ isOpen, entity, toggleModal, onDelete, type }) => {
+    if (!isOpen || !entity) return null;
 
-    const handleDelete = async () => {
-        try {
-            const { responseJson, response } = await requester(
-                `${apiEndpoints.users.delete.url}/${user.id}`,
-                {
-                    method: apiEndpoints.users.delete.method,
-                },
-                true
-            );
-            if (response.ok) {
-                onDelete(user.id);
-                toggleDeleteModal();
-            }
-        } catch (error) {
-            setErrors({ message: "An error occurred. Please try again." });
-        }
-    };
+    const { errors, handleDelete } = useDeleteEntity(
+        entity.id,
+        apiEndpoints[type].delete.url,
+        apiEndpoints[type].delete.method,
+        onDelete,
+        toggleModal
+    );
 
     return (
         <div
             className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-            onClick={toggleDeleteModal}
+            onClick={toggleModal}
         >
             <div
                 className="bg-stone-800 p-4 rounded-md min-w-[250px]"
@@ -40,9 +29,9 @@ const DeleteUserModal = ({ isOpen, user, toggleDeleteModal, onDelete }) => {
                 </div>
                 <div className="mt-2">
                     <p className="text-white text-center">
-                        Are you sure you want to delete the user <br />
+                        Are you sure you want to delete the document <br />
                         <strong className="text-red-500 hover:text-red-600 cursor-default">
-                            {user.username}
+                            {document.title}
                         </strong>
                         ?
                     </p>
@@ -50,7 +39,7 @@ const DeleteUserModal = ({ isOpen, user, toggleDeleteModal, onDelete }) => {
                 {errors && <p className="text-red-500">{errors.message}</p>}
                 <div className="mt-4 flex gap-3 justify-end">
                     <button
-                        onClick={toggleDeleteModal}
+                        onClick={toggleModal}
                         type="button"
                         className="bg-indigo-500 p-1 rounded"
                     >
@@ -69,4 +58,4 @@ const DeleteUserModal = ({ isOpen, user, toggleDeleteModal, onDelete }) => {
     );
 };
 
-export default DeleteUserModal;
+export default DeleteEntityModal;

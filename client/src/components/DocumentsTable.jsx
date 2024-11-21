@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
-import requester from "../common/requester";
 import TableHead from "./TableHead";
 import TableRow from "./TableRow.jsx";
 import EditDocumentModal from "./modals/EditDocumentModal.jsx";
-import DeleteDocumentModal from "./modals/DeleteDocumentModal.jsx";
 import CreateDocumentModal from "./modals/CreateDocumentModal.jsx";
 import apiEndPoints from "../config/apiEndpoints";
 import { documentsTableValues } from "../constants/documentsTableValues.js";
 import documentStatusPropClasses from "../constants/documentStatusPropClasses.js";
+import useFetchEntity from "../components/hooks/useFetchEntity.jsx";
+import useToggleModal from "../components/hooks/useToggleModal.jsx";
+import validEntityTypes from "../constants/validEntityTypes.js";
+import DeleteEntityModal from "./modals/DeleteEntityModal.jsx";
+import EditEntityModal from "./modals/EditEntityModal.jsx";
+import { editDocumentsModalConfig } from "../config/editModalConfigs.js";
 
 const DOCUMENTS_TABLE_HEAD = documentsTableValues.map(
     (item) => Object.values(item)[0].title
@@ -18,67 +21,30 @@ const DOCUMENTS_TABLE_ROWS_PROPS = documentsTableValues.map(
 );
 
 const documentsTable = () => {
-    const [documents, setDocuments] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [editModalOpen, setEditModalOpen] = useState(false);
-    const [showCreateDocumentModal, setShowCreateDocumentModal] =
-        useState(false);
-    const [deleteModalOpen, setDeleteModalOpen] = useState(false);
-    const [selectedDocument, setselectedDocument] = useState(null);
+    const {
+        entities: documents,
+        loading,
+        error,
+        refetch,
+    } = useFetchEntity(
+        validEntityTypes.documents,
+        apiEndPoints.documents.all.url,
+        apiEndPoints.documents.all.method
+    );
 
-    const toggleEditModal = () => {
-        setEditModalOpen(!editModalOpen);
-    };
+    const {
+        selectedEntity,
+        toggleCreateModal,
+        toggleDeleteModal,
+        handleEditClick,
+        toggleEditModal,
+        editModalOpen,
+        deleteModalOpen,
+        createModalOpen,
+    } = useToggleModal();
 
-    const handleEditClick = (document) => {
-        setselectedDocument(document);
-        toggleEditModal();
-    };
-
-    const toggleDeleteModal = (document) => {
-        setselectedDocument(document);
-        setDeleteModalOpen(!deleteModalOpen);
-    };
-
-    const handleSave = (updatedDocument) => {
-        setDocuments((prevDocuments) =>
-            prevDocuments.map((document) =>
-                document.id === updatedDocument.id ? updatedDocument : document
-            )
-        );
-    };
-
-    const handleDelete = () => {
-        fetchDocuments();
-    };
-    const handleCreate = (document) => {
-        setDocuments((prevdocuments) => [...prevdocuments, document]);
-    };
-
-    const fetchDocuments = async () => {
-        try {
-            const { responseJson, response } = await requester(
-                apiEndPoints.documents.all.url,
-                {
-                    method: apiEndPoints.documents.all.method,
-                },
-                true
-            );
-
-            setDocuments(responseJson.documents || []);
-            setLoading(false);
-        } catch (err) {
-            setError("Failed to fetch documents");
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchDocuments();
-    }, []);
-    const toggleCreateDocumentModal = () => {
-        setShowCreateDocumentModal(!showCreateDocumentModal);
+    const handleAction = () => {
+        refetch();
     };
 
     if (loading) return <div>Loading...</div>;
@@ -89,7 +55,7 @@ const documentsTable = () => {
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <TableHead
                     tableHead={DOCUMENTS_TABLE_HEAD}
-                    onAddNewClick={toggleCreateDocumentModal}
+                    onAddNewClick={toggleCreateModal}
                 />
                 <tbody>
                     {documents.map((document) => {
@@ -109,22 +75,26 @@ const documentsTable = () => {
                 </tbody>
             </table>
             <CreateDocumentModal
-                isOpen={showCreateDocumentModal}
-                toggleModal={toggleCreateDocumentModal}
-                onCreate={handleCreate}
+                isOpen={createModalOpen}
+                toggleModal={toggleCreateModal}
+                onCreate={handleAction}
             />
 
-            <DeleteDocumentModal
+            <DeleteEntityModal
                 isOpen={deleteModalOpen}
-                document={selectedDocument}
-                toggleDeleteModal={toggleDeleteModal}
-                onDelete={handleDelete}
+                entity={selectedEntity}
+                toggleModal={toggleDeleteModal}
+                onDelete={handleAction}
+                type={validEntityTypes.documents}
             />
-            <EditDocumentModal
+            <EditEntityModal
                 isOpen={editModalOpen}
-                document={selectedDocument}
+                entity={selectedEntity}
                 toggleModal={toggleEditModal}
-                onSave={handleSave}
+                onSave={handleAction}
+                fieldsConfig={editDocumentsModalConfig}
+                url={apiEndPoints.documents.update.url}
+                method={apiEndPoints.documents.update.method}
             />
         </div>
     );
