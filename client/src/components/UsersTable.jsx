@@ -1,10 +1,8 @@
 import TableHead from "./TableHead";
 import TableRow from "./TableRow.jsx";
-import EditUserModal from "./modals/EditUserModal.jsx";
 import apiEndPoints from "../config/apiEndpoints";
 import { usersTableValues } from "../constants/usersTableValues.js";
 import userStatusPropClasses from "../constants/userStatusPropClasses.js";
-import useFetchEntity from "./hooks/useFetchEntity.jsx";
 import useToggleModal from "./hooks/useToggleModal.jsx";
 import validEntityTypes from "../constants/validEntityTypes.js";
 import DeleteEntityModal from "./modals/DeleteEntityModal.jsx";
@@ -19,18 +17,7 @@ const USRERS_TABLE_ROW_PROPS = usersTableValues.map(
     (item) => Object.values(item)[0].prop
 );
 
-export default function UsersTable() {
-    const {
-        entities: users,
-        loading,
-        error,
-        refetch,
-    } = useFetchEntity(
-        validEntityTypes.users,
-        apiEndPoints.users.all.url,
-        apiEndPoints.users.all.method
-    );
-
+export default function UsersTable({ users, loading, error }) {
     const {
         selectedEntity,
         toggleDeleteModal,
@@ -48,7 +35,7 @@ export default function UsersTable() {
     if (error) return <div className="text-red-500">{error}</div>;
 
     return (
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2 mb-2">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <TableHead tableHead={USERS_TABLE_HEAD} />
                 <tbody>

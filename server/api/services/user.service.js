@@ -24,10 +24,14 @@ const getUsers = async (req, res) => {
         if (!users) {
             return res.status(404).json({ message: "No users found" });
         }
+        const totalPages = Math.ceil(users.count / limit);
 
-        return res
-            .status(200)
-            .json({ users: users.rows, count: users.rows.length });
+        return res.status(200).json({
+            users: users.rows,
+            count: users.rows.length,
+            totalPages,
+            currentPage: parseInt(page),
+        });
     } catch (err) {
         console.log(err);
     }

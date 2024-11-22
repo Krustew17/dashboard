@@ -26,9 +26,14 @@ const getDocuments = async (req, res) => {
             return res.status(404).json({ message: "No documents found." });
         }
 
-        return res
-            .status(200)
-            .json({ documents: documents.rows, count: documents.rows.length });
+        const totalPages = Math.ceil(documents.count / limit);
+
+        return res.status(200).json({
+            documents: documents.rows,
+            count: documents.rows.length,
+            totalPages,
+            currentPage: parseInt(page),
+        });
     } catch (err) {
         console.log(err);
     }
@@ -40,7 +45,7 @@ const createDocument = async (req, res) => {
         const performedByUser = req.user;
 
         if (!title) {
-            return res.status(400).json({ message: "Title is required" });
+            return res.status(400).json({ message: "Title is required." });
         }
         const updatedBy = {
             id: req.user.id,

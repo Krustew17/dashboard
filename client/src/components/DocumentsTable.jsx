@@ -1,6 +1,5 @@
 import TableHead from "./TableHead";
 import TableRow from "./TableRow.jsx";
-import EditDocumentModal from "./modals/EditDocumentModal.jsx";
 import CreateDocumentModal from "./modals/CreateDocumentModal.jsx";
 import apiEndPoints from "../config/apiEndpoints";
 import { documentsTableValues } from "../constants/documentsTableValues.js";
@@ -20,18 +19,7 @@ const DOCUMENTS_TABLE_ROWS_PROPS = documentsTableValues.map(
     (item) => Object.values(item)[0].prop
 );
 
-const documentsTable = () => {
-    const {
-        entities: documents,
-        loading,
-        error,
-        refetch,
-    } = useFetchEntity(
-        validEntityTypes.documents,
-        apiEndPoints.documents.all.url,
-        apiEndPoints.documents.all.method
-    );
-
+const documentsTable = ({ documents, loading, error, handleAction }) => {
     const {
         selectedEntity,
         toggleCreateModal,
@@ -43,15 +31,11 @@ const documentsTable = () => {
         createModalOpen,
     } = useToggleModal();
 
-    const handleAction = () => {
-        refetch();
-    };
-
     if (loading) return <div>Loading...</div>;
     if (error) return <div className="text-red-500">{error}</div>;
 
     return (
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2">
+        <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-2 mb-2">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <TableHead
                     tableHead={DOCUMENTS_TABLE_HEAD}
