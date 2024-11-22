@@ -10,8 +10,9 @@ const CreateDocumentModal = ({ isOpen, toggleModal, onCreate }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
         try {
-            const { responseJson } = await requester(
+            const { response, responseJson } = await requester(
                 apiEndpoints.documents.create.url,
                 {
                     method: apiEndpoints.documents.create.method,
@@ -19,6 +20,12 @@ const CreateDocumentModal = ({ isOpen, toggleModal, onCreate }) => {
                 },
                 true
             );
+
+            if (!response.ok) {
+                setErrors(responseJson.message);
+                return;
+            }
+
             onCreate(responseJson.document);
             setTitle("");
             toggleModal();
@@ -30,7 +37,7 @@ const CreateDocumentModal = ({ isOpen, toggleModal, onCreate }) => {
 
     return (
         <div
-            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
             onClick={toggleModal}
         >
             <div

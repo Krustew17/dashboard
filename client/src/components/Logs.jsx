@@ -1,20 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import apiEndpoints from "../config/apiEndpoints";
-import requester from "../common/requester";
 import calculateTimeAgo from "../helpers/calculateTimeAgo";
 import useFetchEntity from "../components/hooks/useFetchEntity.jsx";
 import validEntityTypes from "../constants/validEntityTypes.js";
-const Logs = ({ type }) => {
-    const {
-        entities: logs,
-        loading,
-        error,
-    } = useFetchEntity(
-        validEntityTypes.logs,
-        apiEndpoints.logs.all.url,
-        apiEndpoints.logs.all.method
-    );
-
+const Logs = ({ logs, loading, error }) => {
     if (loading) return <div>Loading...</div>;
     if (error) return <div className="text-red-500">{error}</div>;
 

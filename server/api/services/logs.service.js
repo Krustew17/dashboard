@@ -1,6 +1,5 @@
 import { LOGS_PAGE_LIMIT } from "../../config/constants.js";
 import db from "../../models/index.js";
-import viewedPagesLogsModel from "../../models/viewedPagesLogsModel.js";
 import validations from "../services/validations/validPage.js";
 
 const AuditLog = db.auditLog;
@@ -28,9 +27,14 @@ const getAllLogs = async (req, res) => {
             return res.status(404).json({ message: "No logs found." });
         }
 
-        return res
-            .status(200)
-            .json({ logs: logs.rows, count: logs.rows.length });
+        const totalPages = Math.ceil(logs.count / limit);
+
+        return res.status(200).json({
+            logs: logs.rows,
+            count: logs.rows.length,
+            totalPages,
+            currentPage: parseInt(page),
+        });
     } catch (err) {
         console.log(err);
     }
