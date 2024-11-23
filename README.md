@@ -17,7 +17,7 @@
 
 ## 🔧 Technology Stack
 
-- **Frontend**: React.js, Redux
+- **Frontend**: React.js, Redux, Recharts
 - **Backend**: Node.js, Express.js
-- **Database**: PostgreSQL
-- **Authentication**: JWT
+- **Database**: MySQL
+- **Authentication**: RBAC JWT
