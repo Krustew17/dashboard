@@ -8,6 +8,7 @@ import BarChartComponent from "../components/charts/BarChart";
 import useWindowSize from "../components/hooks/useWindowSize";
 import PieChartComponent from "../components/charts/PieChart";
 import LoginsCard from "../components/LoginsCard";
+import chartTitles from "../constants/chartTitles";
 
 const AnalyticsPage = () => {
     const [activeUsersCount, setActiveUsersCount] = useState(0);
@@ -17,7 +18,7 @@ const AnalyticsPage = () => {
     const [barChartData, setBarChartData] = useState([]);
     const [pieChartData, setPieChartData] = useState([]);
     const windowSize = useWindowSize();
-    const chartHeight = windowSize.width < 1024 ? 200 : 300;
+    const chartHeight = windowSize.width < 1024 ? 220 : 300;
 
     const fetchActiveUsers = async () => {
         try {
@@ -113,7 +114,6 @@ const AnalyticsPage = () => {
     };
 
     const handleTimeframeChange = (timeframe, type) => {
-        console.log(timeframe, type);
         switch (type) {
             case "loginsCount":
                 fetchLoginsCount(timeframe);
@@ -145,7 +145,7 @@ const AnalyticsPage = () => {
         <div>
             <Nav />
             <div className="p-6 space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-8">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:px-8">
                     <div className="bg-stone-800 p-6 rounded-lg shadow-lg text-white flex items-center space-x-4">
                         <FaUserAlt className="text-indigo-500 text-3xl" />
                         <div>
@@ -174,27 +174,29 @@ const AnalyticsPage = () => {
                     </div>
                 </div>
 
-                <div className="flex w-full flex-wrap justify-between gap-4 px-8">
+                <div className="flex w-full flex-wrap justify-between gap-4 md:px-8">
                     <LineChartComponent
                         width={"100%"}
                         height={chartHeight}
                         data={registersData}
                         dataKeyX="date"
                         dataKeyY="registrations"
-                        title={"Daily Registrations (Last 7 Days)"}
+                        title={chartTitles.lineChart}
                     />
                     <BarChartComponent
                         width={"100%"}
                         height={chartHeight}
                         data={barChartData}
                         dataKeyX="date"
-                        title={"Daily Role Actions (Last 7 days)"}
+                        title={chartTitles.barChart}
                     />
                 </div>
-                <div className="flex w-full flex-wrap justify-center gap-4 px-8">
+                <div className="flex w-full flex-wrap justify-center gap-4 md:px-8">
                     <PieChartComponent
+                        width={"100%"}
+                        height={chartHeight}
                         data={pieChartData}
-                        title={"Page Views Count (Last 7 days)"}
+                        title={chartTitles.pieChart}
                     />
                 </div>
             </div>

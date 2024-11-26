@@ -17,7 +17,7 @@ const USRERS_TABLE_ROW_PROPS = usersTableValues.map(
     (item) => Object.values(item)[0].prop
 );
 
-export default function UsersTable({ users, loading, error }) {
+export default function UsersTable({ users, loading, error, handleAction }) {
     const {
         selectedEntity,
         toggleDeleteModal,
@@ -26,10 +26,6 @@ export default function UsersTable({ users, loading, error }) {
         editModalOpen,
         deleteModalOpen,
     } = useToggleModal();
-
-    const handleAction = () => {
-        refetch();
-    };
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div className="text-red-500">{error}</div>;

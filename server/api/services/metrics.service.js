@@ -44,31 +44,42 @@ const getLoginsCount = async (req, res) => {
 
 const getUserRegisterCount = async (req, res) => {
     try {
-        let { timeframe } = req.query;
-        if (!timeframe) {
-            timeframe = defaultTimeframes.registersCount;
-        }
-        const validTimeframe = validations.validateTimeframe(timeframe);
+        const startDate = new Date() - 6 * 24 * 60 * 60 * 1000;
+        const endDate = new Date();
 
-        // Fetch data grouped by day
-        const logs = await AuditLog.findAll({
-            attributes: [
-                [fn("DATE", col("createdAt")), "registerDate"],
-                [fn("COUNT", col("id")), "dailyCount"],
-            ],
-            where: {
-                action: logActions.register,
-                createdAt: { [Op.gte]: validTimeframe },
+        const logs = await sequelize.query(
+            `
+            SELECT 
+                DATE(createdAt) AS date,
+                COUNT(*) AS dailyCount
+            FROM audit_logs
+            WHERE createdAt BETWEEN :startDate AND :endDate
+            AND action = 'has registered'
+            GROUP BY date
+            ORDER BY date ASC
+            `,
+            {
+                replacements: { startDate, endDate },
+                type: sequelize.QueryTypes.SELECT,
             },
-            group: [literal("DATE(createdAt)")],
-            order: [[literal("DATE(createdAt)"), "ASC"]],
-        });
+        );
 
-        // Format the result for response
-        const result = logs.map((log) => ({
-            date: log.dataValues.registerDate,
-            registrations: log.dataValues.dailyCount,
-        }));
+        const allDates = [];
+        let currentDate = new Date(startDate);
+        const end = new Date(endDate);
+
+        while (currentDate <= end) {
+            allDates.push(currentDate.toISOString().split("T")[0]);
+            currentDate.setDate(currentDate.getDate() + 1);
+        }
+
+        const result = allDates.map((date) => {
+            const log = logs.find((log) => log.date === date);
+            return {
+                date,
+                registrations: log ? log.dailyCount : 0,
+            };
+        });
 
         return res.status(200).json({ registersCount: result });
     } catch (err) {
@@ -82,6 +93,11 @@ const getRolesActivity = async (req, res) => {
         if (!timeframe) {
             timeframe = defaultTimeframes.rolesActivity;
         }
+
+        const startDate = new Date();
+        startDate.setDate(startDate.getDate() - 6);
+        const endDate = new Date();
+
         const validTimeframe = validations.validateTimeframe(timeframe);
 
         const logs = await sequelize.query(
@@ -92,12 +108,12 @@ const getRolesActivity = async (req, res) => {
                 SUM(CASE WHEN JSON_UNQUOTE(JSON_EXTRACT(performedByUserData, '$.role')) = 'updater' THEN 1 ELSE 0 END) AS updater,
                 SUM(CASE WHEN JSON_UNQUOTE(JSON_EXTRACT(performedByUserData, '$.role')) = 'viewer' THEN 1 ELSE 0 END) AS viewer
             FROM audit_logs
-            WHERE createdAt >= :validTimeframe
+            WHERE createdAt BETWEEN :startDate AND :endDate
             GROUP BY date
             ORDER BY date ASC
             `,
             {
-                replacements: { validTimeframe },
+                replacements: { startDate, endDate },
                 type: sequelize.QueryTypes.SELECT,
             },
         );

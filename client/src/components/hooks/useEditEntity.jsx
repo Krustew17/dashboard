@@ -17,6 +17,7 @@ export default function useEditEntity(
     };
 
     const handleSubmit = async (e) => {
+        console.log(newEntity);
         e.preventDefault();
 
         try {
@@ -28,13 +29,14 @@ export default function useEditEntity(
                 },
                 true
             );
-
+            console.log(response, responseJson);
             if (response.ok) {
                 handleSave();
             } else {
                 setErrors(responseJson);
             }
         } catch (error) {
+            console.log(error);
             setErrors({ message: "An error occurred. Please try again." });
         }
     };
