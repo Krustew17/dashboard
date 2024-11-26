@@ -9,5 +9,6 @@ const paths = {
     logs: "/logs",
     changePassword: "/change-password",
     documents: "/documents",
+    devices: "/devices",
 };
 export default paths;

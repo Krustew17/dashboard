@@ -35,10 +35,19 @@ const UsersPage = () => {
         refetch();
     };
 
+    const handleAction = () => {
+        refetch();
+    };
+
     return (
         <div>
             <Nav />
-            <UsersTable users={users} loading={loading} error={error} />
+            <UsersTable
+                users={users}
+                loading={loading}
+                error={error}
+                handleAction={handleAction}
+            />
             <Pagination
                 currentPage={currentPage}
                 totalPages={totalPages}

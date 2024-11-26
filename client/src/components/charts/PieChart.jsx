@@ -9,13 +9,16 @@ import {
 } from "recharts";
 import CustomTooltip from "./CustomTooltip";
 
-const PieChartComponent = ({ data, title }) => {
+const PieChartComponent = ({ data, title, width, height }) => {
+    const outerRadius = 130 ? height > 200 : 50;
     const COLORS = ["#bd97f0", "#906bc2", "#7b50b5", "#9897f0", "#6f6bc2"];
 
     return (
         <div className="w-full md:w-[48%] bg-stone-800 p-6 rounded-lg shadow-lg">
-            <h3 className="text-xl font-semibold text-white mb-4">{title}</h3>
-            <ResponsiveContainer width="100%" height={400}>
+            <h3 className="md:text-xl font-semibold text-white mb-4">
+                {title}
+            </h3>
+            <ResponsiveContainer width={width} height={height + 50}>
                 <PieChart>
                     <Pie
                         data={data}
@@ -23,7 +26,7 @@ const PieChartComponent = ({ data, title }) => {
                         nameKey="page"
                         cx="50%"
                         cy="50%"
-                        outerRadius={150}
+                        outerRadius={outerRadius}
                         fill="#8884d8"
                         label
                     >

@@ -10,6 +10,7 @@ import AnalyticsPage from "./pages/AnalyticsPage.jsx";
 import LogsPage from "./pages/LogsPage.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import DocumentsPage from "./pages/DocumentsPage.jsx";
+import DevicesPage from "./pages/DevicesPage.jsx";
 import AuthenticatedRoute from "./components/AuthenticatedRoute.jsx";
 import useRouteChange from "./components/hooks/useRouteChange.jsx";
 import ChangePasswordPage from "./pages/ChangePasswordPage.jsx";
@@ -77,6 +78,7 @@ const App = () => {
                     />
                 }
             />
+            <Route path={paths.devices} element={<DevicesPage />} />
             <Route
                 path={paths.documents}
                 element={
